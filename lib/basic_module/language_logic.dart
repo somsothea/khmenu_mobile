@@ -1,33 +1,39 @@
 import 'package:flutter/material.dart';
-import 'language_data.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:idg2/basic_module/language_data.dart';
 
-class LanguageLogic extends ChangeNotifier {
+class LanguageLogic extends ChangeNotifier{
   Language _lang = Khmer();
   Language get lang => _lang;
   int _langIndex = 0;
   int get langIndex => _langIndex;
 
-  void changToKhmer() {
-    _lang = Khmer();
+   final _secureStorage = FlutterSecureStorage();
+  final String _key = "LanguageLogic";
+
+  final _langList  = [
+    Khmer(),
+    Language(),
+  ];
+
+    Future read() async {
+    String? data = await _secureStorage.read(key: _key);
+    _langIndex = int.parse(data ?? "0");
+    _lang = _langList[_langIndex];
+    notifyListeners();
+  }
+
+  void changToKhmer(){
     _langIndex = 0;
+    _secureStorage.write(key: _key, value: _langIndex.toString());
+    _lang = _langList[_langIndex];
     notifyListeners();
   }
 
-  void changeToEnglish() {
-    _lang = Language();
+  void changeToEnglish(){
     _langIndex = 1;
-    notifyListeners();
-  }
-
-  void changeToChinese() {
-    _lang = Chinese();
-    _langIndex = 2;
-    notifyListeners();
-  }
-
-  void changeToThailand() {
-    _lang = Thailand();
-    _langIndex = 3;
+    _secureStorage.write(key: _key, value: _langIndex.toString());
+    _lang = _langList[_langIndex];
     notifyListeners();
   }
 }

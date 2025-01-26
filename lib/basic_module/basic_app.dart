@@ -13,8 +13,45 @@ Widget providerBasicApp() {
       ChangeNotifierProvider(create: (context) => ThemeLogic()),
       ChangeNotifierProvider(create: (context) => LanguageLogic()),
     ],
-    child: BasicApp(),
+    child: BasicSplashScreen(),
   );
+}
+
+class BasicSplashScreen extends StatefulWidget {
+  const BasicSplashScreen({super.key});
+
+  @override
+  State<BasicSplashScreen> createState() => _BasicSplashScreenState();
+}
+
+class _BasicSplashScreenState extends State<BasicSplashScreen> {
+  Future _readLocalData() async {
+    await Future.delayed(Duration(seconds: 2), () {});
+    await context.read<CounterLogic>().read();
+    await context.read<ThemeLogic>().read();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: _readLocalData(),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          debugPrint(snapshot.error.toString());
+          return Center(
+            child: Text("Something went wrong with local device"),
+          );
+        }
+        if (snapshot.connectionState == ConnectionState.done) {
+          return BasicApp();
+        } else {
+          return MaterialApp(
+            home: Scaffold(body: Center(child: CircularProgressIndicator())),
+          );
+        }
+      },
+    );
+  }
 }
 
 class BasicApp extends StatelessWidget {
@@ -46,6 +83,7 @@ class BasicApp extends StatelessWidget {
       home: SimpleStateScreen(),
       themeMode: mode,
       theme: ThemeData(
+        useMaterial3: true,
         brightness: Brightness.light,
         textTheme: myTextTheme,
         cardTheme: CardTheme(
@@ -81,10 +119,11 @@ class BasicApp extends StatelessWidget {
           foregroundColor: Colors.white,
         )),
         textButtonTheme: TextButtonThemeData(
-            style: TextButton.styleFrom(
-          foregroundColor: lightColor,
-          side: BorderSide(color: lightColor),
-        )),
+          style: TextButton.styleFrom(
+            foregroundColor: lightColor,
+            side: BorderSide(color: lightColor),
+          ),
+        ),
       ),
       darkTheme: ThemeData(
         brightness: Brightness.dark,

@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
+// import 'package:url_launcher/url_launcher.dart';
 
 import 'counter_logic.dart';
 import 'language_data.dart';
@@ -19,6 +21,7 @@ class _SimpleStateScreenState extends State<SimpleStateScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     _lang = context.watch<LanguageLogic>().lang;
     _langIndex = context.watch<LanguageLogic>().langIndex;
 
@@ -33,16 +36,6 @@ class _SimpleStateScreenState extends State<SimpleStateScreen> {
     return AppBar(
       title: Text(_lang.appName),
       actions: [
-        IconButton(
-          onPressed: () {
-            Navigator.of(context).push(
-              CupertinoPageRoute(
-                builder: (context) => SecondStateScreen(),
-              ),
-            );
-          },
-          icon: Icon(Icons.music_video),
-        ),
         IconButton(
           onPressed: () {
             Navigator.of(context).push(
@@ -126,26 +119,34 @@ class _SimpleStateScreenState extends State<SimpleStateScreen> {
                 trailing: _langIndex == 1 ? Icon(Icons.check_circle) : null,
               ),
               ListTile(
-                leading: Text("CN"),
-                title: Text(_lang.changeToChinese),
-                onTap: () {
-                  context.read<LanguageLogic>().changeToChinese();
-                },
-                trailing: _langIndex == 2 ? Icon(Icons.check_circle) : null,
-              ),
-              ListTile(
-                leading: Text("TH"),
-                title: Text(_lang.changeToThailand),
-                onTap: () {
-                  context.read<LanguageLogic>().changeToThailand();
-                },
-                trailing: _langIndex == 3 ? Icon(Icons.check_circle) : null,
+                leading: Text("中"),
+                title: Text("更改为中文"),
+                onTap: () {},
               ),
             ],
           ),
+          ListTile(
+            leading: Icon(Icons.call),
+            title: Text("Contact Us"),
+            onTap: (){
+              // _launchInBrowser("https://google.com");
+              _launchInBrowser("tel:+85512987654");
+              // _launchInBrowser("https://google.com");
+            },
+          )
         ],
       ),
     );
+  }
+
+  Future<void> _launchInBrowser(String uri) async {
+    Uri url = Uri.parse(uri);
+    if (!await launchUrl(
+      url,
+      mode: LaunchMode.externalApplication,
+    )) {
+      throw Exception('Could not launch $url');
+    }
   }
 
   Widget _buildBody() {
