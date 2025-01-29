@@ -103,7 +103,7 @@ class _ItemScreenState extends State<ItemScreen> {
         children: [
           Expanded(
             child: Image.network(
-              "http://172.23.129.61:4000/uploads/${item.image}",
+              "https://khmenu.cloud/uploads/${item.image}",
               fit: BoxFit.cover,
             ),
           ),

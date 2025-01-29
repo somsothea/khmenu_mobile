@@ -8,7 +8,7 @@ class ProductService {
     required Function(Future<List<ProductModel>>) onRes,
     required Function(Object?) onError,
   }) async {
-    String url = "http://172.23.129.61:4000/v1/items";
+    String url = "https://khmenu.cloud/v1/items";
     try {
       http.Response response = await http.get(Uri.parse(url));
       final data = compute(productModelFromJson, response.body);

@@ -15,7 +15,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _confirmPasswordCtrl = TextEditingController();
 
   Future<void> _register() async {
-    final url = Uri.parse('http://172.23.129.61:4000/v1/auth/sign-up');
+    final url = Uri.parse('https://khmenu.cloud/v1/auth/sign-up');
     final body = json.encode({
       "firstname": _firstnameCtrl.text.trim(),
       "lastname": _lastnameCtrl.text.trim(),

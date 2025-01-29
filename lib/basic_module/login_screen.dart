@@ -12,7 +12,7 @@ class LoginScreen extends StatelessWidget {
   final _storage = FlutterSecureStorage(); // For storing the token securely
 
   Future<void> _login(BuildContext context) async {
-    final url = Uri.parse('http://172.23.129.61:4000/v1/auth/login');
+    final url = Uri.parse('https://khmenu.cloud/v1/auth/login');
     final body = json.encode({
       "email": _emailCtrl.text.trim(),
       "password": _passCtrl.text.trim(),

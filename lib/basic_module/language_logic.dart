@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:idg2/basic_module/language_data.dart';
+import 'package:khmenu_mobile/basic_module/language_data.dart';
 
 class LanguageLogic extends ChangeNotifier{
   Language _lang = Khmer();
