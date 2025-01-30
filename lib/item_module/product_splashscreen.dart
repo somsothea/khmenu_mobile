@@ -7,7 +7,7 @@ class ProductSplashscreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Icon(Icons.shop, size: 100),
+        child: Icon(Icons.menu_book, size: 100),
       ),
     );
   }

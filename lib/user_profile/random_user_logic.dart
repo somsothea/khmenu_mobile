@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'movie_model.dart';
-import 'movie_service.dart';
+import 'random_user_model.dart';
+import 'random_user_service.dart';
 
-
-class MovieSearchLogic extends ChangeNotifier {
-  List<Search> _records = [];
-  List<Search> get records => _records;
+class RandomUserLogic extends ChangeNotifier {
+  List<Doc> _productList = [];
+  List<Doc> get productList => _productList;
 
   bool _loading = false;
   bool get loading => _loading;
@@ -19,12 +18,10 @@ class MovieSearchLogic extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future search(String movieTitle) async{
-    await MovieService.search(
-      movieTitle: movieTitle,
-      onRes: (value)  async{
-        final data = await value;
-        _records = data.search;
+  Future read() async{
+    await RandomUserService.read(
+      onRes: (items)  async{
+        _productList = await items;
         _loading = false;
         notifyListeners();
       },
@@ -36,3 +33,4 @@ class MovieSearchLogic extends ChangeNotifier {
     );
   }
 }
+ 

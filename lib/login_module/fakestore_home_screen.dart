@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import 'fakestore_login_screen.dart';
+import 'fakestore_loading_screen.dart';
+import 'fakestore_login_logic.dart';
 
 class FakestoreHomeScreen extends StatefulWidget {
   const FakestoreHomeScreen({super.key});
@@ -20,10 +22,11 @@ class _FakestoreHomeScreenState extends State<FakestoreHomeScreen> {
         foregroundColor: Colors.white,
         actions: [
           IconButton(
-            onPressed: () {
+            onPressed: () async{
+              await context.read<FakestoreLoginLogic>().clear();
               Navigator.of(context).pushReplacement(
                     CupertinoPageRoute(
-                      builder: (context) => FakeStoreLoginScreen(),
+                      builder: (context) => FakeStoreLoadingScreen(),
                     ),
                   );
             },

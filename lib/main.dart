@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'package:khmenu_mobile/basic_module/login_screen.dart';
-import 'package:khmenu_mobile/movie_module/movie_provider.dart';
 import 'package:khmenu_mobile/item_module/item_provider.dart';
 import 'package:khmenu_mobile/random_user/random_user_provider.dart';
 import 'package:khmenu_mobile/basic_module/basic_app.dart';
 import 'package:khmenu_mobile/login_module/fakestore_provider.dart';
+import 'package:khmenu_mobile/store_module/store_provider.dart';
 
 void main() {
   runApp(MyApp());
@@ -36,11 +36,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   // List of screens for the modules
   final List<Widget> _screens = [
-    LoginScreen(),
-    fakeStoreProvider(),
+    storeProvider(),
     itemProvider(),
-    movieProvider(),
-    randomUserProvider(),
+    fakeStoreProvider(),
+    LoginScreen(),
     providerBasicApp(),
   ];
 
@@ -60,24 +59,20 @@ class _HomeScreenState extends State<HomeScreen> {
         unselectedItemColor: Colors.grey, // Grey for unselected items
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Login',
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.store),
-            label: 'Stores',
+            label: 'Store',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.book),
             label: 'Items',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.movie_filter),
-            label: 'Movie',
+            icon: Icon(Icons.person_2),
+            label: 'Profile',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Users',
+            icon: Icon(Icons.login),
+            label: 'Login',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),

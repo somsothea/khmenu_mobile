@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'fakestore_home_screen.dart';
+import 'fakestore_login_logic.dart';
 import 'fakestore_login_models.dart';
-import 'fakestore_service.dart';
 
 class FakeStoreLoginScreen extends StatefulWidget {
   @override
@@ -15,13 +16,13 @@ class _FakeStoreLoginScreenState extends State<FakeStoreLoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _buildBody(context),
+      body: _buildBody(),
     );
   }
 
   final _formKey = GlobalKey<FormState>();
 
-  Widget _buildBody(BuildContext context) {
+  Widget _buildBody() {
     return Center(
       child: Container(
         constraints: BoxConstraints(
@@ -59,34 +60,28 @@ class _FakeStoreLoginScreenState extends State<FakeStoreLoginScreen> {
         ),
         onPressed: () async {
           if (_formKey.currentState!.validate()) {
-            LoginRequestModel requestModel = LoginRequestModel(
-              username: _usernameCtrl.text.trim(),
-              password: _passCtrl.text.trim(),
-            );
+            MyResponseModel responseModel =
+                await context.read<FakestoreLoginLogic>().login(
+                      _usernameCtrl.text.trim(),
+                      _passCtrl.text.trim(),
+                    );
 
-            await FakestoreService.login(
-              request: requestModel,
-              onRes: (value) async {
-                LoginResponseModel data = await value;
-                debugPrint("data.token: ${data.token}");
-                debugPrint("data.errorText: ${data.errorText}");
-                if (data.token != null) {
-                  //success
-                  Navigator.of(context).pushReplacement(
-                    CupertinoPageRoute(
-                      builder: (context) => FakestoreHomeScreen(),
-                    ),
-                  );
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text("${data.errorText}"),
-                    ),
-                  );
-                }
-              },
-              onError: (err) {},
-            );
+            debugPrint("ResponseModel: ${responseModel.toString()}");
+
+            if (responseModel.token != null) {
+              // success
+              Navigator.of(context).pushReplacement(
+                CupertinoPageRoute(
+                  builder: (context) => FakestoreHomeScreen(),
+                ),
+              );
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text("Login Failed"),
+                ),
+              );
+            }
           } else {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(

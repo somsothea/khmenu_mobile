@@ -16,7 +16,7 @@ class _ItemScreenState extends State<ItemScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Item Screen"),
+        title: Text("New Items"),
       ),
       body: _buildBody(),
     );
@@ -83,7 +83,7 @@ class _ItemScreenState extends State<ItemScreen> {
       },
       child: GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
+          crossAxisCount: 3,
           mainAxisSpacing: 5,
           crossAxisSpacing: 5,
           childAspectRatio: 4 / 6,

@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
+
 LoginRequestModel loginRequestModelFromJson(String str) =>
     LoginRequestModel.fromJson(json.decode(str));
 
@@ -7,55 +9,63 @@ String loginRequestModelToJson(LoginRequestModel data) =>
     json.encode(data.toJson());
 
 class LoginRequestModel {
-  String username;
+  String email;
   String password;
 
   LoginRequestModel({
-    required this.username,
+    required this.email,
     required this.password,
   });
 
   factory LoginRequestModel.fromJson(Map<String, dynamic> json) =>
       LoginRequestModel(
-        username: json["username"],
+        email: json["email"],
         password: json["password"],
       );
 
   Map<String, dynamic> toJson() => {
-        "username": username,
+        "email": email,
         "password": password,
       };
 }
 
-LoginResponseModel loginResponseModelFromJson(String str) {
-  LoginResponseModel model;
+MyResponseModel loginResponseModelFromJson(String str) {
+  MyResponseModel model;
+  debugPrint("str: $str");
   try {
-    model = LoginResponseModel.fromJson(json.decode(str));
+    model = MyResponseModel.fromJson(json.decode(str));
   } on FormatException catch (e) {
-    model = LoginResponseModel.fromErrorText(str);
+    model = MyResponseModel.fromErrorText(str);
   }
   return model;
 }
 
-String loginResponseModelToJson(LoginResponseModel data) =>
+String loginResponseModelToJson(MyResponseModel data) =>
     json.encode(data.toJson());
 
-class LoginResponseModel {
+class MyResponseModel {
   String? token;
   String? errorText;
 
-  LoginResponseModel({this.token});
+  MyResponseModel({this.token, this.errorText});
 
-  factory LoginResponseModel.fromJson(Map<String, dynamic> json) =>
-      LoginResponseModel(
-        token: json["token"],
+  factory MyResponseModel.fromJson(Map<String, dynamic> json) =>
+      MyResponseModel(
+        token: json["accessToken"],
+        errorText: null,
       );
 
-  LoginResponseModel.fromErrorText(String text) {
-    errorText = text;
-  }
+  factory MyResponseModel.fromErrorText(text) => MyResponseModel(
+        token: null,
+        errorText: null,
+      );
 
   Map<String, dynamic> toJson() => {
-        "token": token,
+        "accessToken": token,
       };
+
+  @override
+  String toString() {
+    return 'MyResponseModel(token: $token, errorText: $errorText)';
+  }
 }

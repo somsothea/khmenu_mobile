@@ -4,8 +4,8 @@ import 'random_user_model.dart';
 import 'random_user_service.dart';
 
 class RandomUserLogic extends ChangeNotifier {
-  List<Result> _productList = [];
-  List<Result> get productList => _productList;
+  List<Doc> _productList = [];
+  List<Doc> get productList => _productList;
 
   bool _loading = false;
   bool get loading => _loading;

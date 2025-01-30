@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'fakestore_login_screen.dart';
-import 'fakestore_splashscreen.dart';
+import 'fakestore_loading_screen.dart';
 
 
 class FakeStoreApp extends StatefulWidget {
@@ -15,24 +13,7 @@ class _FakeStoreAppState extends State<FakeStoreApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: _buildLoadingScreen(),
+      home: FakeStoreLoadingScreen(),
     );
-  }
-
-  Future _readData() async{
-    await Future.delayed(Duration(seconds: 2), (){});
-  }
-
-  Widget _buildLoadingScreen(){
-    return FutureBuilder(
-      future: _readData(),
-      builder: (context, snapshot) {
-        if(snapshot.connectionState == ConnectionState.done){
-          return FakeStoreLoginScreen();
-        }else{
-          return FakeStoreSplashscreen();
-        }
-      },
-    );
-  }
+  }  
 }

@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'register.dart';
-import 'package:khmenu_mobile/item_module/item_provider.dart';
+//import 'package:khmenu_mobile/item_module/item_provider.dart';
+import 'package:khmenu_mobile/store_module/store_provider.dart';
 
 class LoginScreen extends StatelessWidget {
   final _emailCtrl = TextEditingController();
@@ -41,7 +42,7 @@ class LoginScreen extends StatelessWidget {
           Navigator.of(context).push(
             CupertinoPageRoute(
               builder: (context) =>
-                  itemProvider(), // Replace with your next screen
+                  storeProvider(), // Replace with your next screen
             ),
           );
         } else {
