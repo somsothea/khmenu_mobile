@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:khmenu_mobile/login_module/fakestore_loading_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 // import 'package:url_launcher/url_launcher.dart';
@@ -11,6 +12,8 @@ import 'second_state_screen.dart';
 import 'theme_logic.dart';
 
 class SimpleStateScreen extends StatefulWidget {
+  const SimpleStateScreen({super.key});
+
   @override
   State<SimpleStateScreen> createState() => _SimpleStateScreenState();
 }
@@ -21,7 +24,6 @@ class _SimpleStateScreenState extends State<SimpleStateScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     _lang = context.watch<LanguageLogic>().lang;
     _langIndex = context.watch<LanguageLogic>().langIndex;
 
@@ -118,22 +120,17 @@ class _SimpleStateScreenState extends State<SimpleStateScreen> {
                 },
                 trailing: _langIndex == 1 ? Icon(Icons.check_circle) : null,
               ),
-              ListTile(
-                leading: Text("中"),
-                title: Text("更改为中文"),
-                onTap: () {},
-              ),
             ],
           ),
           ListTile(
             leading: Icon(Icons.call),
             title: Text("Contact Us"),
-            onTap: (){
+            onTap: () {
               // _launchInBrowser("https://google.com");
-              _launchInBrowser("tel:+85512987654");
+              _launchInBrowser("tel:+85568666420");
               // _launchInBrowser("https://google.com");
             },
-          )
+          ),
         ],
       ),
     );
@@ -152,44 +149,17 @@ class _SimpleStateScreenState extends State<SimpleStateScreen> {
   Widget _buildBody() {
     return Column(
       children: [
-        Row(
-          children: [
-            ElevatedButton(
-              onPressed: () {},
-              child: Text("Shopping Cart"),
-            ),
-            TextButton(
-              onPressed: () {},
-              child: Text("Wish List"),
-            ),
-          ],
-        ),
-        Card(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: TextField(
-              decoration: InputDecoration(
-                icon: Icon(Icons.email),
-                hintText: "Enter Email",
-                suffixIcon: IconButton(
-                  onPressed: () {},
-                  icon: Icon(Icons.visibility),
-                ),
-              ),
-            ),
-          ),
-        ),
         Expanded(
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "About Cambodia",
+                  "About KH menu",
                   style: Theme.of(context).textTheme.displayLarge,
                 ),
                 Text(
-                  "Cambodia is a Southeast Asian nation whose landscape spans low-lying plains, the Mekong Delta, mountains and Gulf of Thailand coastline. Phnom Penh, its capital, is home to the art deco Central Market, glittering Royal Palace and the National Museum's historical and archaeological exhibits",
+                  "Cloud Menu is a free platform for update and customize your shop menu in real-time, ensuring that your offerings are always accurate and up-to-date.",
                 ),
                 Text(
                   "Updated on 08/01/2025",

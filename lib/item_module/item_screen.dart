@@ -113,7 +113,7 @@ class _ItemScreenState extends State<ItemScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(item.title),
-                Text(item.price.toString()),
+                Text("\$ ${item.price}"),
               ],
             ),
           ),

@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:khmenu_mobile/env.dart';
 
 import 'fakestore_service.dart';
 import 'fakestore_login_models.dart';
@@ -33,6 +35,8 @@ class FakestoreLoginLogic extends ChangeNotifier {
   Object? _error;
   Object? get error => _error;
 
+  get http => null;
+
   void setLoading() {
     _loading = true;
     notifyListeners();
@@ -60,5 +64,43 @@ class FakestoreLoginLogic extends ChangeNotifier {
     _loading = false;
     notifyListeners();
     return _responseModel;
+  }
+
+  Future<void> getUserInfo() async {
+    String url = "${Env.apiBaseUrl}/v1/auth/me";
+
+    try {
+      final token = await _cache.read(key: _key);
+      if (token == null) {
+        _error = "No token found. Please login again.";
+        notifyListeners();
+        return;
+      }
+
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {"Authorization": "Bearer $token"},
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        String userId = data["_id"];
+        String firstName = data["firstname"];
+        String lastName = data["lastname"];
+
+        // Store user details
+        await _cache.write(key: "userId", value: userId);
+        await _cache.write(key: "firstName", value: firstName);
+        await _cache.write(key: "lastName", value: lastName);
+
+        debugPrint("User Data Stored: $userId, $firstName, $lastName");
+      } else {
+        _error = "Failed to fetch user data: ${response.body}";
+      }
+    } catch (e) {
+      _error = "Network error: ${e.toString()}";
+    }
+
+    notifyListeners();
   }
 }

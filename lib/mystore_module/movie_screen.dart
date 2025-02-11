@@ -2,39 +2,64 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'fakestore_loading_screen.dart';
-import 'fakestore_login_logic.dart';
+import 'movie_logic.dart';
+import 'movie_model.dart';
+import 'movie_search_screen.dart';
 
-import 'package:khmenu_mobile/mystore_module/movie_logic.dart';
-import 'package:khmenu_mobile/mystore_module/movie_model.dart';
-import 'package:khmenu_mobile/mystore_module/movie_search_screen.dart';
-
-class FakestoreHomeScreen extends StatefulWidget {
-  const FakestoreHomeScreen({super.key});
+class MovieScreen extends StatefulWidget {
+  const MovieScreen({super.key});
 
   @override
-  State<FakestoreHomeScreen> createState() => _FakestoreHomeScreenState();
+  State<MovieScreen> createState() => _MovieScreenState();
 }
 
-class _FakestoreHomeScreenState extends State<FakestoreHomeScreen> {
+class _MovieScreenState extends State<MovieScreen> {
+  final _scroller = ScrollController();
+  bool _showUpButton = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _scroller.addListener(_scrollListener);
+  }
+
+  _scrollListener() {
+    setState(() {
+      if (_scroller.hasClients && _scroller.position.pixels >= 1000) {
+        _showUpButton = true;
+      } else {
+        _showUpButton = false;
+      }
+
+      if (_scroller.hasClients &&
+          _scroller.position.pixels == _scroller.position.maxScrollExtent) {
+        debugPrint("Reached the bottom");
+        context.read<StoreLogic>().readAppend();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _scroller.removeListener(_scrollListener);
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("My Store"),
-        backgroundColor: Colors.pink,
-        foregroundColor: Colors.white,
         actions: [
           IconButton(
-            onPressed: () async {
-              await context.read<FakestoreLoginLogic>().clear();
-              Navigator.of(context).pushReplacement(
+            onPressed: () {
+              Navigator.of(context).push(
                 CupertinoPageRoute(
-                  builder: (context) => FakeStoreLoadingScreen(),
+                  builder: (context) => MovieSearchScreen(),
                 ),
               );
             },
-            icon: Icon(Icons.logout),
+            icon: Icon(Icons.search),
           ),
         ],
       ),
@@ -59,7 +84,7 @@ class _FakestoreHomeScreenState extends State<FakestoreHomeScreen> {
   Widget _buildBody() {
     Object? error = context.watch<StoreLogic>().error;
     bool loading = context.watch<StoreLogic>().loading;
-    List<Doc> records = context.watch<StoreLogic>().records;
+    List<Doc> records = context.watch<StoreLogic>().docs;
 
     if (loading) {
       return Center(child: CircularProgressIndicator());

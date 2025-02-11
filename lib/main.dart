@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:khmenu_mobile/basic_module/login_screen.dart';
 import 'package:khmenu_mobile/item_module/item_provider.dart';
 import 'package:khmenu_mobile/random_user/random_user_provider.dart';
 import 'package:khmenu_mobile/basic_module/basic_app.dart';
@@ -39,7 +38,6 @@ class _HomeScreenState extends State<HomeScreen> {
     storeProvider(),
     itemProvider(),
     fakeStoreProvider(),
-    LoginScreen(),
     providerBasicApp(),
   ];
 
@@ -68,11 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person_2),
-            label: 'Profile',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.login),
-            label: 'Login',
+            label: 'My Account',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),

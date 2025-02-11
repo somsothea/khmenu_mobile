@@ -7,6 +7,8 @@ import 'fakestore_login_models.dart';
 import 'fakestore_login_screen.dart';
 import 'fakestore_splashscreen.dart';
 
+import 'package:khmenu_mobile/mystore_module/movie_provider.dart';
+
 class FakeStoreLoadingScreen extends StatefulWidget {
   const FakeStoreLoadingScreen({super.key});
 
@@ -15,7 +17,6 @@ class FakeStoreLoadingScreen extends StatefulWidget {
 }
 
 class _FakeStoreLoadingScreenState extends State<FakeStoreLoadingScreen> {
-
   Future _readData() async {
     await Future.delayed(Duration(seconds: 1), () {});
     await context.read<FakestoreLoginLogic>().read();
@@ -31,10 +32,9 @@ class _FakeStoreLoadingScreenState extends State<FakeStoreLoadingScreen> {
               context.watch<FakestoreLoginLogic>().responseModel;
           if (responseModel.token == null) {
             return FakeStoreLoginScreen();
-          }
-          else{
+          } else {
             debugPrint("responseModel.token: ${responseModel.token}");
-            return FakestoreHomeScreen();
+            return movieProvider();
           }
         } else {
           return FakeStoreSplashscreen();
@@ -42,6 +42,4 @@ class _FakeStoreLoadingScreenState extends State<FakeStoreLoadingScreen> {
       },
     );
   }
-
-  
 }
