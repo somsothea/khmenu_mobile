@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import 'package:khmenu_mobile/env.dart';
 import 'product_logic.dart';
 import 'product_model.dart';
 
@@ -103,7 +103,7 @@ class _ItemScreenState extends State<ItemScreen> {
         children: [
           Expanded(
             child: Image.network(
-              "https://khmenu.cloud/uploads/${item.image}",
+              "${Env.apiBaseUrl}/uploads/${item.image}",
               fit: BoxFit.cover,
             ),
           ),

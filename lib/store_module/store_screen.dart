@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:khmenu_mobile/env.dart';
 import 'store_logic.dart';
 import 'store_model.dart';
 
@@ -85,7 +86,7 @@ class _StoreScreenState extends State<StoreScreen> {
         children: [
           Expanded(
             child: Image.network(
-              "https://khmenu.cloud/uploads/${item.storelogo}",
+              "${Env.apiBaseUrl}/uploads/${item.storelogo}",
               width: double.infinity, // Ensures it takes full height
               fit: BoxFit.cover,
             ),

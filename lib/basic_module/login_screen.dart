@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'register.dart';
+import 'package:khmenu_mobile/env.dart';
 //import 'package:khmenu_mobile/item_module/item_provider.dart';
 import 'package:khmenu_mobile/store_module/store_provider.dart';
 
@@ -13,7 +14,7 @@ class LoginScreen extends StatelessWidget {
   final _storage = FlutterSecureStorage(); // For storing the token securely
 
   Future<void> _login(BuildContext context) async {
-    final url = Uri.parse('https://khmenu.cloud/v1/auth/login');
+    final url = Uri.parse('${Env.apiBaseUrl}/v1/auth/login');
     final body = json.encode({
       "email": _emailCtrl.text.trim(),
       "password": _passCtrl.text.trim(),

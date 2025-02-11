@@ -9,7 +9,7 @@ class RandomUserService {
     required Function(List<Doc>) onRes,
     required Function(Object?) onError,
   }) async {
-    String url = "https://khmenu.cloud/v1/users";
+    String url = "http://198.50.183.209:4000/v1/users";
 
     try {
       // Retrieve the stored auth token

@@ -15,7 +15,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _confirmPasswordCtrl = TextEditingController();
 
   Future<void> _register() async {
-    final url = Uri.parse('https://khmenu.cloud/v1/auth/sign-up');
+    final url = Uri.parse('http://198.50.183.209:4000/v1/auth/sign-up');
     final body = json.encode({
       "firstname": _firstnameCtrl.text.trim(),
       "lastname": _lastnameCtrl.text.trim(),
@@ -31,11 +31,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
         body: body,
       );
 
+      print("Response Code: ${response.statusCode}");
+      print("Response Body: ${response.body}");
+
       if (response.statusCode == 201) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("Registration Successful")),
         );
-        Navigator.of(context).pop();
+
+        // Forward to Login Screen
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => LoginScreen()),
+        );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("Registration Failed: ${response.body}")),
@@ -89,6 +97,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ],
         ),
       ),
+    );
+  }
+}
+
+// Dummy LoginScreen for Navigation
+class LoginScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("Login")),
+      body: Center(child: Text("Login Screen")),
     );
   }
 }

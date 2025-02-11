@@ -7,7 +7,7 @@ class StoreService {
     required Function(List<Doc>) onRes,
     required Function(Object?) onError,
   }) async {
-    String url = "https://khmenu.cloud/v1/stores/";
+    String url = "http://198.50.183.209:4000/v1/stores/";
 
     try {
       http.Response response = await http.get(Uri.parse(url));
