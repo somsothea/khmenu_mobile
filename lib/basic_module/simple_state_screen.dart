@@ -159,7 +159,7 @@ class _SimpleStateScreenState extends State<SimpleStateScreen> {
                   style: Theme.of(context).textTheme.displayLarge,
                 ),
                 Text(
-                  "Cloud Menu is a free platform for update and customize your shop menu in real-time, ensuring that your offerings are always accurate and up-to-date.",
+                  "KH Menu is a free platform for update and customize your shop menu in real-time, ensuring that your offerings are always accurate and up-to-date.",
                 ),
                 Text(
                   "Updated on 08/01/2025",

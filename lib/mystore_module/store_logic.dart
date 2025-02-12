@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'movie_model.dart';
-import 'movie_service.dart';
+import 'store_model.dart';
+import 'store_service.dart';
 
-class MovieSearchLogic extends ChangeNotifier {
-  List<Doc> _records = [];
-  List<Doc> get records => _records;
+class StoreLogic extends ChangeNotifier {
+  List<Welcome> _storeList = [];
+  List<Welcome> get storeList => _storeList;
 
   bool _loading = false;
   bool get loading => _loading;
@@ -18,12 +18,10 @@ class MovieSearchLogic extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future search(String movieTitle) async {
-    await StoreService.search(
-      movieTitle: movieTitle,
-      onRes: (value) async {
-        final data = await value;
-        _records = data.docs;
+  Future read() async{
+    await StoreService.read(
+      onRes: (items)  async{
+        _storeList = await items;
         _loading = false;
         notifyListeners();
       },
@@ -35,3 +33,4 @@ class MovieSearchLogic extends ChangeNotifier {
     );
   }
 }
+ 

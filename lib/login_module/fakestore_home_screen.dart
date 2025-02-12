@@ -1,13 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:khmenu_mobile/env.dart';
 
 import 'fakestore_loading_screen.dart';
 import 'fakestore_login_logic.dart';
 
-import 'package:khmenu_mobile/mystore_module/movie_logic.dart';
-import 'package:khmenu_mobile/mystore_module/movie_model.dart';
-import 'package:khmenu_mobile/mystore_module/movie_search_screen.dart';
 
 class FakestoreHomeScreen extends StatefulWidget {
   const FakestoreHomeScreen({super.key});
@@ -37,109 +35,6 @@ class _FakestoreHomeScreenState extends State<FakestoreHomeScreen> {
             icon: Icon(Icons.logout),
           ),
         ],
-      ),
-      body: _buildBody(),
-      floatingActionButton: _showUpButton ? _buildUpButton() : null,
-    );
-  }
-
-  Widget _buildUpButton() {
-    return FloatingActionButton(
-      child: Icon(Icons.arrow_upward),
-      onPressed: () {
-        _scroller.animateTo(
-          0.0,
-          duration: Duration(milliseconds: 600),
-          curve: Curves.easeInOut,
-        );
-      },
-    );
-  }
-
-  Widget _buildBody() {
-    Object? error = context.watch<StoreLogic>().error;
-    bool loading = context.watch<StoreLogic>().loading;
-    List<Doc> records = context.watch<StoreLogic>().records;
-
-    if (loading) {
-      return Center(child: CircularProgressIndicator());
-    }
-
-    if (error != null) {
-      return _buildErrorMessage(error);
-    } else {
-      return _buildListView(records);
-    }
-  }
-
-  Widget _buildErrorMessage(Object error) {
-    debugPrint(error.toString());
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.error, size: 50),
-          Text("Something went wrong"),
-          ElevatedButton(
-            onPressed: () {
-              context.read<StoreLogic>().setLoading();
-              context.read<StoreLogic>().read();
-            },
-            child: Text("RETRY"),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildListView(List<Doc> items) {
-    bool showLoading = context.watch<StoreLogic>().showLoading;
-    bool endOfResult = context.watch<StoreLogic>().endOfResult;
-
-    return RefreshIndicator(
-      onRefresh: () async {
-        context.read<StoreLogic>().setLoading();
-        context.read<StoreLogic>().read();
-      },
-      child: showLoading == false || endOfResult == true
-          ? _buildList(items)
-          : _buildListPlusOne(items),
-    );
-  }
-
-  Widget _buildList(List<Doc> items) {
-    return ListView.builder(
-      controller: _scroller,
-      itemCount: items.length,
-      itemBuilder: (context, index) {
-        return _buildListItem(items[index]);
-      },
-    );
-  }
-
-  Widget _buildListPlusOne(List<Doc> items) {
-    return ListView.builder(
-      controller: _scroller,
-      itemCount: items.length + 1,
-      itemBuilder: (context, index) {
-        if (index < items.length) {
-          return _buildListItem(items[index]);
-        } else {
-          return Container(
-            padding: EdgeInsets.all(10),
-            alignment: Alignment.center,
-            child: CircularProgressIndicator(),
-          );
-        }
-      },
-    );
-  }
-
-  Widget _buildListItem(Doc item) {
-    return Card(
-      child: ListTile(
-        title: Image.network(item.storelogo),
-        subtitle: Text("${item.storename}"),
       ),
     );
   }
