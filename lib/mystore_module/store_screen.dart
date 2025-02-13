@@ -19,7 +19,7 @@ class _StoreScreenState extends State<StoreScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("My Store"),
+        title: Text("My Stores"),
         backgroundColor: Colors.pink,
         foregroundColor: Colors.white,
         actions: [
@@ -43,7 +43,7 @@ class _StoreScreenState extends State<StoreScreen> {
   Widget _buildBody() {
     Object? error = context.watch<StoreLogic>().error;
     bool loading = context.watch<StoreLogic>().loading;
-    List<Welcome> productList = context.watch<StoreLogic>().storeList;
+    List<MyStore> productList = context.watch<StoreLogic>().storeList;
 
     if (loading) {
       return Center(child: CircularProgressIndicator());
@@ -76,7 +76,7 @@ class _StoreScreenState extends State<StoreScreen> {
     );
   }
 
-  Widget _buildGridView(List<Welcome> items) {
+  Widget _buildGridView(List<MyStore> items) {
     return RefreshIndicator(
       onRefresh: () async {
         context.read<StoreLogic>().setLoading();
@@ -98,13 +98,13 @@ class _StoreScreenState extends State<StoreScreen> {
     );
   }
 
-  Widget _buildItem(Welcome item) {
+  Widget _buildItem(MyStore item) {
     return Card(
       child: Column(
         children: [
           Expanded(
             child: Image.network(
-              "${Env.apiBaseUrl}/uploads/${item.storelogo}",
+              "${Env.apiBaseUrl}/uploads/${item.docs.storelogo}",
               width: double.infinity, // Ensures it takes full height
               fit: BoxFit.cover,
             ),
@@ -112,7 +112,7 @@ class _StoreScreenState extends State<StoreScreen> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              "${item.storename}",
+              "${item.docs.storename}",
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
@@ -121,4 +121,10 @@ class _StoreScreenState extends State<StoreScreen> {
       ),
     );
   }
+}
+
+extension on List<Doc> {
+  get storelogo => null;
+
+  get storename => null;
 }

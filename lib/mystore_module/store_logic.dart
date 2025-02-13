@@ -4,8 +4,8 @@ import 'store_model.dart';
 import 'store_service.dart';
 
 class StoreLogic extends ChangeNotifier {
-  List<Welcome> _storeList = [];
-  List<Welcome> get storeList => _storeList;
+  List<MyStore> _storeList = [];
+  List<MyStore> get storeList => _storeList;
 
   bool _loading = false;
   bool get loading => _loading;
@@ -18,9 +18,9 @@ class StoreLogic extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future read() async{
+  Future read() async {
     await StoreService.read(
-      onRes: (items)  async{
+      onRes: (items) async {
         _storeList = await items;
         _loading = false;
         notifyListeners();
@@ -33,4 +33,3 @@ class StoreLogic extends ChangeNotifier {
     );
   }
 }
- 

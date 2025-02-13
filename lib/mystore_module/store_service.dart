@@ -4,7 +4,7 @@ import 'package:khmenu_mobile/env.dart';
 
 class StoreService {
   static Future<void> read({
-    required Function(List<Welcome>) onRes,
+    required Function(List<MyStore>) onRes,
     required Function(Object?) onError,
   }) async {
     String url = "${Env.apiBaseUrl}/v1/stores";
@@ -12,8 +12,8 @@ class StoreService {
     try {
       http.Response response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
-        final data = welcomeFromJson(response.body);
-        onRes(data);
+        final Doc = myStoreFromJson(response.body);
+        onRes(Doc);
       } else {
         onError("Error: ${response.statusCode} - ${response.reasonPhrase}");
       }
