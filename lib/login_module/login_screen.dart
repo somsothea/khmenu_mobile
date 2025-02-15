@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'fakestore_home_screen.dart';
-import 'fakestore_login_logic.dart';
-import 'fakestore_login_models.dart';
+import 'login_home_screen.dart';
+import 'login_logic.dart';
+import 'login_models.dart';
 
 class FakeStoreLoginScreen extends StatefulWidget {
   @override

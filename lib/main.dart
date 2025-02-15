@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:khmenu_mobile/item_module/item_provider.dart';
-import 'package:khmenu_mobile/random_user/random_user_provider.dart';
+import 'package:khmenu_mobile/users_module/random_user_provider.dart';
 import 'package:khmenu_mobile/basic_module/basic_app.dart';
-import 'package:khmenu_mobile/login_module/fakestore_provider.dart';
+import 'package:khmenu_mobile/login_module/login_provider.dart';
 import 'package:khmenu_mobile/store_module/store_provider.dart';
 
 void main() {

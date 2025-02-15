@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'fakestore_loading_screen.dart';
+import 'login_loading_screen.dart';
 
 
 class FakeStoreApp extends StatefulWidget {

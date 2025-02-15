@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'fakestore_home_screen.dart';
-import 'fakestore_login_logic.dart';
-import 'fakestore_login_models.dart';
-import 'fakestore_login_screen.dart';
-import 'fakestore_splashscreen.dart';
+import 'login_home_screen.dart';
+import 'login_logic.dart';
+import 'login_models.dart';
+import 'login_screen.dart';
+import 'login_splashscreen.dart';
 
-import 'package:khmenu_mobile/mystore_module/store_provider.dart';
+import 'package:khmenu_mobile/mystore_module/mystore_provider.dart';
 
 class FakeStoreLoadingScreen extends StatefulWidget {
   const FakeStoreLoadingScreen({super.key});
@@ -34,7 +34,7 @@ class _FakeStoreLoadingScreenState extends State<FakeStoreLoadingScreen> {
             return FakeStoreLoginScreen();
           } else {
             debugPrint("responseModel.token: ${responseModel.token}");
-            return storeProvider();
+            return FakestoreHomeScreen();
           }
         } else {
           return FakeStoreSplashscreen();

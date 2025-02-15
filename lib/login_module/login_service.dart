@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'fakestore_login_models.dart';
+import 'login_models.dart';
 import 'package:khmenu_mobile/env.dart';
 
 class FakestoreService {

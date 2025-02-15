@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'random_user_model.dart';
-import 'random_user_service.dart';
+import 'mystore_model.dart';
+import 'mystore_service.dart';
 
-class RandomUserLogic extends ChangeNotifier {
-  List<Doc> _productList = [];
-  List<Doc> get productList => _productList;
+class StoreLogic extends ChangeNotifier {
+  List<Doc> _storeList = [];
+  List<Doc> get storeList => _storeList;
 
   bool _loading = false;
   bool get loading => _loading;
@@ -18,10 +18,10 @@ class RandomUserLogic extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future read() async{
-    await RandomUserService.read(
-      onRes: (items)  async{
-        _productList = await items;
+  Future read() async {
+    await StoreService.read(
+      onRes: (items) async {
+        _storeList = await items;
         _loading = false;
         notifyListeners();
       },
@@ -33,4 +33,3 @@ class RandomUserLogic extends ChangeNotifier {
     );
   }
 }
- 

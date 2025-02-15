@@ -5,25 +5,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:khmenu_mobile/env.dart';
 
-import 'fakestore_service.dart';
-import 'fakestore_login_models.dart';
+import 'login_service.dart';
+import 'login_models.dart';
 
 class FakestoreLoginLogic extends ChangeNotifier {
   MyResponseModel _responseModel = MyResponseModel();
   MyResponseModel get responseModel => _responseModel;
-
-  final _cache = FlutterSecureStorage();
-  final _key = "FakestoreLoginLogic";
-
+ final _cache = FlutterSecureStorage();
   Future read() async {
-    String? tk = await _cache.read(key: _key);
+    String? tk = await _cache.read(key: Env.apiKey);
     debugPrint("reading token: $tk");
     _responseModel = MyResponseModel(token: tk);
     notifyListeners();
   }
 
   Future clear() async {
-    _cache.delete(key: _key);
+    _cache.delete(key: Env.apiKey);
     debugPrint("token cleared");
     _responseModel = MyResponseModel(token: null);
     notifyListeners();
@@ -54,7 +51,7 @@ class FakestoreLoginLogic extends ChangeNotifier {
     try {
       _responseModel = await FakestoreService.login(request: requestModel);
       debugPrint("Saving token: ${_responseModel.token}");
-      await _cache.write(key: _key, value: _responseModel.token);
+      await _cache.write(key: Env.apiKey, value: _responseModel.token);
       _error = null;
     } catch (err) {
       _error = err;
@@ -70,7 +67,7 @@ class FakestoreLoginLogic extends ChangeNotifier {
     String url = "${Env.apiBaseUrl}/v1/auth/me";
 
     try {
-      final token = await _cache.read(key: _key);
+      final token = await _cache.read(key: Env.apiKey);
       if (token == null) {
         _error = "No token found. Please login again.";
         notifyListeners();

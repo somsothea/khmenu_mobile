@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'random_user_logic.dart';
 import 'random_user_screen.dart';
-import 'user_splashscreen.dart';
+import 'users_splashscreen.dart';
 
 class ProductApp extends StatefulWidget {
   const ProductApp({super.key});

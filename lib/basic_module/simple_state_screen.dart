@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:khmenu_mobile/login_module/fakestore_loading_screen.dart';
+import 'package:khmenu_mobile/users_module/random_user_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 // import 'package:url_launcher/url_launcher.dart';
@@ -42,7 +42,7 @@ class _SimpleStateScreenState extends State<SimpleStateScreen> {
           onPressed: () {
             Navigator.of(context).push(
               CupertinoPageRoute(
-                builder: (context) => SecondStateScreen(),
+                builder: (context) => randomUserProvider(),
               ),
             );
           },

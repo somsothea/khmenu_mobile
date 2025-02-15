@@ -1,21 +1,22 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'random_user_model.dart';
+import 'package:khmenu_mobile/env.dart';
 
 class RandomUserService {
-  static final _storage = FlutterSecureStorage(); // Secure storage instance
+  //static final _storage = FlutterSecureStorage(); // Secu// Define your API key here
 
   static Future<void> read({
     required Function(List<Doc>) onRes,
     required Function(Object?) onError,
   }) async {
-    String url = "https://khmenu.cloud/v1/users";
+    String url = "${Env.apiBaseUrl}/v1/users";
 
     try {
       // Retrieve the stored auth token
-      String? token = await _storage.read(key: 'authToken');
+      String? token = await Env.apiStorage.read(key: Env.apiKey);
 
-      if (token == null) {
+      if (token == null || token.isEmpty) {
         onError("Authentication token not found");
         return;
       }
@@ -35,7 +36,7 @@ class RandomUserService {
         onError("Error: ${response.statusCode} - ${response.reasonPhrase}");
       }
     } catch (e) {
-      onError(e);
+      onError("Network error: ${e.toString()}");
     }
   }
 }

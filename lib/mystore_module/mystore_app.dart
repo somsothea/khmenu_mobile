@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'store_logic.dart';
-import 'store_screen.dart';
-import 'store_splashscreen.dart';
+import 'mystore_logic.dart';
+import 'mystore_screen.dart';
+import 'mystore_splashscreen.dart';
 
 class StoreApp extends StatefulWidget {
   const StoreApp({super.key});

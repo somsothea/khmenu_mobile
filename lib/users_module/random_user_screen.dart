@@ -1,49 +1,30 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:khmenu_mobile/login_module/fakestore_loading_screen.dart';
-import 'package:khmenu_mobile/login_module/fakestore_login_logic.dart';
 import 'package:provider/provider.dart';
-import 'package:khmenu_mobile/env.dart';
-import 'store_logic.dart';
-import 'store_model.dart';
+import 'random_user_logic.dart';
+import 'random_user_model.dart';
 
-class StoreScreen extends StatefulWidget {
-  const StoreScreen({super.key});
+class RandomUserScreen extends StatefulWidget {
+  const RandomUserScreen({super.key});
 
   @override
-  State<StoreScreen> createState() => _StoreScreenState();
+  State<RandomUserScreen> createState() => _RandomUserScreenState();
 }
 
-class _StoreScreenState extends State<StoreScreen> {
+class _RandomUserScreenState extends State<RandomUserScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("My Stores"),
-        backgroundColor: Colors.pink,
-        foregroundColor: Colors.white,
-        actions: [
-          IconButton(
-            onPressed: () async {
-              await context.read<FakestoreLoginLogic>().clear();
-              Navigator.of(context).pushReplacement(
-                CupertinoPageRoute(
-                  builder: (context) => FakeStoreLoadingScreen(),
-                ),
-              );
-            },
-            icon: Icon(Icons.logout),
-          ),
-        ],
+        title: Text("User Management"),
       ),
       body: _buildBody(),
     );
   }
 
   Widget _buildBody() {
-    Object? error = context.watch<StoreLogic>().error;
-    bool loading = context.watch<StoreLogic>().loading;
-    List<MyStore> productList = context.watch<StoreLogic>().storeList;
+    Object? error = context.watch<RandomUserLogic>().error;
+    bool loading = context.watch<RandomUserLogic>().loading;
+    List<Doc> productList = context.watch<RandomUserLogic>().productList;
 
     if (loading) {
       return Center(child: CircularProgressIndicator());
@@ -66,8 +47,8 @@ class _StoreScreenState extends State<StoreScreen> {
           Text("Something went wrong"),
           ElevatedButton(
             onPressed: () {
-              context.read<StoreLogic>().setLoading();
-              context.read<StoreLogic>().read();
+              context.read<RandomUserLogic>().setLoading();
+              context.read<RandomUserLogic>().read();
             },
             child: Text("RETRY"),
           ),
@@ -76,11 +57,11 @@ class _StoreScreenState extends State<StoreScreen> {
     );
   }
 
-  Widget _buildGridView(List<MyStore> items) {
+  Widget _buildGridView(List<Doc> items) {
     return RefreshIndicator(
       onRefresh: () async {
-        context.read<StoreLogic>().setLoading();
-        context.read<StoreLogic>().read();
+        context.read<RandomUserLogic>().setLoading();
+        context.read<RandomUserLogic>().read();
       },
       child: GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -98,21 +79,21 @@ class _StoreScreenState extends State<StoreScreen> {
     );
   }
 
-  Widget _buildItem(MyStore item) {
+  Widget _buildItem(Doc item) {
     return Card(
       child: Column(
         children: [
           Expanded(
             child: Image.network(
-              "${Env.apiBaseUrl}/uploads/${item.docs.storelogo}",
-              width: double.infinity, // Ensures it takes full height
+              "https://picsum.photos/200",
+              width: double.maxFinite,
               fit: BoxFit.cover,
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              "${item.docs.storename}",
+              "${item.firstname} ${item.lastname}",
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
@@ -121,10 +102,4 @@ class _StoreScreenState extends State<StoreScreen> {
       ),
     );
   }
-}
-
-extension on List<Doc> {
-  get storelogo => null;
-
-  get storename => null;
 }
