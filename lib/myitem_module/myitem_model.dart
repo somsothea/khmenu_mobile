@@ -1,14 +1,14 @@
 // To parse this JSON data, do
 //
-//     final myStore = myStoreFromJson(jsonString);
+//     final myItem = myItemFromJson(jsonString);
 
 import 'dart:convert';
 
-MyStore myStoreFromJson(String str) => MyStore.fromJson(json.decode(str));
+MyItem myItemFromJson(String str) => MyItem.fromJson(json.decode(str));
 
-String myStoreToJson(MyStore data) => json.encode(data.toJson());
+String myItemToJson(MyItem data) => json.encode(data.toJson());
 
-class MyStore {
+class MyItem {
   List<Doc> docs;
   int totalDocs;
   int offset;
@@ -19,9 +19,9 @@ class MyStore {
   bool hasPrevPage;
   bool hasNextPage;
   dynamic prevPage;
-  dynamic nextPage;
+  int nextPage;
 
-  MyStore({
+  MyItem({
     required this.docs,
     required this.totalDocs,
     required this.offset,
@@ -35,7 +35,7 @@ class MyStore {
     required this.nextPage,
   });
 
-  factory MyStore.fromJson(Map<String, dynamic> json) => MyStore(
+  factory MyItem.fromJson(Map<String, dynamic> json) => MyItem(
         docs: List<Doc>.from(json["docs"].map((x) => Doc.fromJson(x))),
         totalDocs: json["totalDocs"],
         offset: json["offset"],
@@ -66,66 +66,64 @@ class MyStore {
 
 class Doc {
   String id;
-  String storename;
-  String storeaddress;
-  String storelogo;
-  String storebanner;
-  String storeurl;
-  String storedescription;
-  String storecontact;
-  String storetelegram;
+  int price;
+  String title;
   String category;
+  String description;
+  String filename;
   String userid;
+  String storeid;
   DateTime createdDate;
   int v;
 
   Doc({
     required this.id,
-    required this.storename,
-    required this.storeaddress,
-    required this.storelogo,
-    required this.storebanner,
-    required this.storeurl,
-    required this.storedescription,
-    required this.storecontact,
-    required this.storetelegram,
+    required this.price,
+    required this.title,
     required this.category,
+    required this.description,
+    required this.filename,
     required this.userid,
+    required this.storeid,
     required this.createdDate,
     required this.v,
   });
 
   factory Doc.fromJson(Map<String, dynamic> json) => Doc(
         id: json["_id"],
-        storename: json["storename"],
-        storeaddress: json["storeaddress"],
-        storelogo: json["storelogo"],
-        storebanner: json["storebanner"],
-        storeurl: json["storeurl"],
-        storedescription: json["storedescription"],
-        storecontact: json["storecontact"],
-        storetelegram: json["storetelegram"],
+        price: json["price"],
+        title: json["title"],
         category: json["category"],
+        description: json["description"],
+        filename: json["filename"],
         userid: json["userid"],
+        storeid: json["storeid"],
         createdDate: DateTime.parse(json["createdDate"]),
         v: json["__v"],
       );
 
-  get storeid => null;
-
   Map<String, dynamic> toJson() => {
         "_id": id,
-        "storename": storename,
-        "storeaddress": storeaddress,
-        "storelogo": storelogo,
-        "storebanner": storebanner,
-        "storeurl": storeurl,
-        "storedescription": storedescription,
-        "storecontact": storecontact,
-        "storetelegram": storetelegram,
+        "price": price,
+        "title": title,
         "category": category,
+        "description": description,
+        "filename": filename,
         "userid": userid,
+        "storeid": storeid,
         "createdDate": createdDate.toIso8601String(),
         "__v": v,
       };
+}
+
+class EnumValues<T> {
+  Map<String, T> map;
+  late Map<T, String> reverseMap;
+
+  EnumValues(this.map);
+
+  Map<T, String> get reverse {
+    reverseMap = map.map((k, v) => MapEntry(v, k));
+    return reverseMap;
+  }
 }

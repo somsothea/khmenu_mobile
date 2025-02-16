@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:khmenu_mobile/env.dart';
-import 'product_model.dart';
+import 'item_model.dart';
 
 class ProductService {
   static Future read({

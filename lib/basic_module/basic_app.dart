@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'counter_logic.dart';
 import 'language_logic.dart';
-import 'simple_state_screen.dart';
+import 'setting_screen.dart';
 import 'theme_logic.dart';
 
 Widget providerBasicApp() {

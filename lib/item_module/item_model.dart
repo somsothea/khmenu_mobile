@@ -17,6 +17,8 @@ class ProductModel {
   String description;
   String category;
   String image;
+  String userid;
+  String storeid;
 
   ProductModel({
     required this.id,
@@ -25,6 +27,8 @@ class ProductModel {
     required this.description,
     required this.category,
     required this.image,
+    required this.userid,
+    required this.storeid,
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
@@ -34,6 +38,8 @@ class ProductModel {
         description: json["description"],
         category: json["category"],
         image: json["filename"],
+        userid: json["userid"],
+        storeid: json["storeid"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -43,6 +49,8 @@ class ProductModel {
         "description": description,
         "category": category,
         "image": image,
+        "userid": userid,
+        "storeid": storeid,
       };
 }
 

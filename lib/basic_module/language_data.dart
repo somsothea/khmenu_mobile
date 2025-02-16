@@ -1,5 +1,5 @@
 class Language {
-  String get appName => "Khmer App";
+  String get appName => "Khmer Digital Menu";
   String get themeColor => "Theme Color";
   String get toSystemMode => "To System Mode";
   String get toLightMode => "To Light Mode";
@@ -10,7 +10,7 @@ class Language {
 }
 
 class Khmer implements Language {
-  String get appName => "កម្មវិធីខ្មែរ";
+  String get appName => "ខ្មែរឌីជីថលមឺនុយ";
   String get themeColor => "ពន្លឺ";
   String get toSystemMode => "ប្តូរពន្លឺតាមប្រព័ន្ធ";
   String get toLightMode => "ប្តូរទៅភ្លឺ";

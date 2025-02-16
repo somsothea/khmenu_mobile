@@ -7,8 +7,6 @@ import 'login_models.dart';
 import 'login_screen.dart';
 import 'login_splashscreen.dart';
 
-import 'package:khmenu_mobile/mystore_module/mystore_provider.dart';
-
 class FakeStoreLoadingScreen extends StatefulWidget {
   const FakeStoreLoadingScreen({super.key});
 

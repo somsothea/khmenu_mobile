@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'login_app.dart';
 import 'login_logic.dart';
 
-Widget fakeStoreProvider() {
+Widget loginProvider() {
   return MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (context) => FakestoreLoginLogic()),

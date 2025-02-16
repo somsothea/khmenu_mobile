@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'login_home_screen.dart';
 import 'login_logic.dart';
 import 'login_models.dart';
+import 'register_screen.dart';
 
 class FakeStoreLoginScreen extends StatefulWidget {
   @override
@@ -41,6 +42,8 @@ class _FakeStoreLoginScreenState extends State<FakeStoreLoginScreen> {
                 _buildPasswordTextFieldBorder(),
                 SizedBox(height: 10),
                 _buidElevatedButton(),
+                SizedBox(height: 10),
+                _buildRegisterButton(), // Add Register Button
               ],
             ),
           ),
@@ -121,7 +124,7 @@ class _FakeStoreLoginScreenState extends State<FakeStoreLoginScreen> {
         decoration: InputDecoration(
           icon: Icon(Icons.person),
           iconColor: Colors.pink,
-          hintText: "Enter Username",
+          hintText: "Enter Email Address",
           hintStyle: TextStyle(color: Colors.pink.shade300),
           border: InputBorder.none,
         ),
@@ -175,6 +178,22 @@ class _FakeStoreLoginScreenState extends State<FakeStoreLoginScreen> {
         textInputAction: TextInputAction.send,
         autocorrect: false,
         obscureText: _hidePassword, //true => password
+      ),
+    );
+  }
+
+  Widget _buildRegisterButton() {
+    return TextButton(
+      onPressed: () {
+        Navigator.of(context).push(
+          CupertinoPageRoute(
+            builder: (context) => RegisterScreen(), // Navigate to Register
+          ),
+        );
+      },
+      child: Text(
+        "Don't have an account? Register",
+        style: TextStyle(color: Colors.pink),
       ),
     );
   }

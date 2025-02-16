@@ -1,13 +1,16 @@
 import 'package:http/http.dart' as http;
-import 'mystore_model.dart';
+import 'myitem_model.dart';
 import 'package:khmenu_mobile/env.dart';
 
 class StoreService {
   static Future<void> read({
     required Function(List<Doc>) onRes,
     required Function(Object?) onError,
+    int page = 1, // Default to page 1
+    int limit = 12, // Default limit per page
   }) async {
-    String url = "${Env.apiBaseUrl}/v1/mystores/";
+    //String url = "${Env.apiBaseUrl}/v1/myitems/?page=$page&limit=$limit";
+    String url = "${Env.apiBaseUrl}/v1/myitems?limit=24";
     String? token = await Env.apiStorage.read(key: Env.apiKey);
 
     if (token == null || token.isEmpty) {
@@ -24,7 +27,7 @@ class StoreService {
         },
       );
       if (response.statusCode == 200) {
-        final body = myStoreFromJson(response.body.toString());
+        final body = myItemFromJson(response.body.toString());
         onRes(body.docs);
       } else {
         onError("Error: ${response.statusCode} - ${response.reasonPhrase}");

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'random_user_model.dart';
-import 'random_user_service.dart';
+import 'user_model.dart';
+import 'user_service.dart';
 
 class RandomUserLogic extends ChangeNotifier {
   List<Doc> _productList = [];
@@ -18,9 +18,9 @@ class RandomUserLogic extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future read() async{
+  Future read() async {
     await RandomUserService.read(
-      onRes: (items)  async{
+      onRes: (items) async {
         _productList = await items;
         _loading = false;
         notifyListeners();
@@ -32,5 +32,17 @@ class RandomUserLogic extends ChangeNotifier {
       },
     );
   }
+
+  void deleteUser(String userId) {
+    RandomUserService.delete(
+      userId: userId,
+      onSuccess: () {
+        productList.removeWhere((user) => user.id == userId);
+        notifyListeners();
+      },
+      onError: (error) {
+        debugPrint("Delete failed: $error");
+      },
+    );
+  }
 }
- 

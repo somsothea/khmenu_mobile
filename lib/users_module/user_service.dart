@@ -1,6 +1,6 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
-import 'random_user_model.dart';
+import 'user_model.dart';
 import 'package:khmenu_mobile/env.dart';
 
 class RandomUserService {
@@ -32,6 +32,38 @@ class RandomUserService {
       if (response.statusCode == 200) {
         final data = welcomeFromJson(response.body);
         onRes(data.docs);
+      } else {
+        onError("Error: ${response.statusCode} - ${response.reasonPhrase}");
+      }
+    } catch (e) {
+      onError("Network error: ${e.toString()}");
+    }
+  }
+
+  static Future<void> delete({
+    required String userId,
+    required Function() onSuccess,
+    required Function(Object?) onError,
+  }) async {
+    String url = "${Env.apiBaseUrl}/v1/users/$userId";
+
+    try {
+      String? token = await Env.apiStorage.read(key: Env.apiKey);
+      if (token == null || token.isEmpty) {
+        onError("Authentication token not found");
+        return;
+      }
+
+      http.Response response = await http.delete(
+        Uri.parse(url),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token",
+        },
+      );
+
+      if (response.statusCode == 200) {
+        onSuccess();
       } else {
         onError("Error: ${response.statusCode} - ${response.reasonPhrase}");
       }

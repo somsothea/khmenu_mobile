@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:khmenu_mobile/env.dart';
-import 'mystore_logic.dart';
-import 'mystore_model.dart';
+import 'myitem_logic.dart';
+import 'myitem_model.dart';
 import 'add_store_screen.dart';
 
 class StoreScreen extends StatefulWidget {
@@ -18,7 +18,7 @@ class _StoreScreenState extends State<StoreScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Manage Stores"),
+        title: Text("Manage Items"),
         backgroundColor: Colors.pink,
         foregroundColor: Colors.white,
         actions: [
@@ -104,7 +104,7 @@ class _StoreScreenState extends State<StoreScreen> {
           children: [
             Expanded(
               child: Image.network(
-                "${Env.apiBaseUrl}/uploads/${item.storelogo}",
+                "${Env.apiBaseUrl}/uploads/${item.filename}",
                 width: double.infinity,
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) {
@@ -119,7 +119,7 @@ class _StoreScreenState extends State<StoreScreen> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                item.storename,
+                item.title,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -136,7 +136,7 @@ class _StoreScreenState extends State<StoreScreen> {
       builder: (context) {
         return AlertDialog(
           title: Text("Delete Store"),
-          content: Text("Are you sure you want to delete ${item.storename}?"),
+          content: Text("Are you sure you want to delete ${item.title}?"),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
@@ -176,7 +176,7 @@ class _StoreScreenState extends State<StoreScreen> {
 
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("${store.storename} deleted successfully")),
+          SnackBar(content: Text("${store.title} deleted successfully")),
         );
         context.read<StoreLogic>().read(); // Refresh store list
       } else {

@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'user_logic.dart';
-import 'user_screen.dart';
-import 'users_splashscreen.dart';
+import 'myitem_logic.dart';
+import 'myitem_screen.dart';
+import 'myitem_splashscreen.dart';
 
-class ProductApp extends StatefulWidget {
-  const ProductApp({super.key});
+class StoreApp extends StatefulWidget {
+  const StoreApp({super.key});
 
   @override
-  State<ProductApp> createState() => _ProductAppState();
+  State<StoreApp> createState() => _StoreAppState();
 }
 
-class _ProductAppState extends State<ProductApp> {
+class _StoreAppState extends State<StoreApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -22,12 +22,12 @@ class _ProductAppState extends State<ProductApp> {
 
   Widget _buildLoadingScreen() {
     return FutureBuilder(
-      future: context.read<RandomUserLogic>().read(),
+      future: context.read<StoreLogic>().read(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          return RandomUserScreen();
+          return StoreScreen();
         } else {
-          return ProductSplashscreen();
+          return StoreSplashscreen();
         }
       },
     );

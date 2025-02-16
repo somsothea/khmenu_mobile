@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'product_model.dart';
-import 'product_service.dart';
+import 'myitem_model.dart';
+import 'myitem_service.dart';
 
-class ProductLogic extends ChangeNotifier {
-  List<ProductModel> _productList = [];
-  List<ProductModel> get productList => _productList;
+class StoreLogic extends ChangeNotifier {
+  List<Doc> _storeList = [];
+  List<Doc> get storeList => _storeList;
 
   bool _loading = false;
   bool get loading => _loading;
@@ -18,10 +18,10 @@ class ProductLogic extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future read() async{
-    await ProductService.read(
-      onRes: (items)  async{
-        _productList = await items;
+  Future read() async {
+    await StoreService.read(
+      onRes: (items) async {
+        _storeList = await items;
         _loading = false;
         notifyListeners();
       },

@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-// To parse this JSON data, do
-//
-//     final loginRequestModel = loginRequestModelFromJson(jsonString);
-
 import 'dart:convert';
 
 LoginRequestModel loginRequestModelFromJson(String str) =>

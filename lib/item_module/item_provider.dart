@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:khmenu_mobile/item_module/product_app.dart';
-import 'package:khmenu_mobile/item_module/product_logic.dart';
+import 'package:khmenu_mobile/item_module/item_app.dart';
+import 'package:khmenu_mobile/item_module/item_logic.dart';
 import 'package:provider/provider.dart';
 
 Widget itemProvider() {

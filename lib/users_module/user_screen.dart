@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'random_user_logic.dart';
-import 'random_user_model.dart';
+import 'user_logic.dart';
+import 'user_model.dart';
 
 class RandomUserScreen extends StatefulWidget {
   const RandomUserScreen({super.key});
@@ -80,26 +80,58 @@ class _RandomUserScreenState extends State<RandomUserScreen> {
   }
 
   Widget _buildItem(Doc item) {
-    return Card(
-      child: Column(
-        children: [
-          Expanded(
-            child: Image.network(
-              "https://picsum.photos/200",
-              width: double.maxFinite,
-              fit: BoxFit.cover,
+    return GestureDetector(
+      onLongPress: () => _showDeleteDialog(item),
+      child: Card(
+        child: Column(
+          children: [
+            Expanded(
+              child: Image.network(
+                "https://cdn.pixabay.com/photo/2012/04/26/19/43/profile-42914_640.png",
+                width: double.maxFinite,
+                fit: BoxFit.cover,
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              "${item.firstname} ${item.lastname}",
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                "${item.firstname} ${item.lastname}",
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
+  }
+
+  void _showDeleteDialog(Doc item) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Confirm Deletion"),
+          content: Text("Are you sure you want to delete ${item.firstname}?"),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text("Cancel"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close dialog
+                _deleteUser(item.id);
+              },
+              child: Text("Delete", style: TextStyle(color: Colors.red)),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _deleteUser(String userId) {
+    context.read<RandomUserLogic>().deleteUser(userId);
   }
 }
