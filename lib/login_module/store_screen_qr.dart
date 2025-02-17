@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:qr_flutter/qr_flutter.dart';
+//import 'package:qr_flutter/qr_flutter.dart';
 
 class StoreScreenQR extends StatelessWidget {
   final String storeLogo;
@@ -50,13 +50,13 @@ class StoreScreenQR extends StatelessWidget {
                       style: TextStyle(fontSize: 18)),
                   Text("URL: $storeUrl", style: TextStyle(fontSize: 16)),
                   SizedBox(height: 20),
-                  Center(
+/*                   Center(
                     child: QrImageView(
                       data: storeUrl,
                       version: QrVersions.auto,
                       size: 180.0,
                     ),
-                  ), // Generate QR Code for Store URL
+                  ), // Generate QR Code for Store URL */
                 ],
               ),
             ),

@@ -2,11 +2,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:khmenu_mobile/env.dart';
+import 'store_screen_qr.dart';
 
 class MyStoreScreenDetail extends StatefulWidget {
   final String storeid;
 
-  // Constructor that accepts userid
   MyStoreScreenDetail({required this.storeid});
 
   @override
@@ -16,6 +16,10 @@ class MyStoreScreenDetail extends StatefulWidget {
 class _MyStoreScreenDetailState extends State<MyStoreScreenDetail> {
   String storeName = "";
   String storeBanner = "";
+  String storeLogo = "";
+  String storeDescription = "";
+  String storeContact = "";
+  String storeUrl = "";
   List<dynamic> items = [];
   bool loading = true;
   String? error;
@@ -29,13 +33,34 @@ class _MyStoreScreenDetailState extends State<MyStoreScreenDetail> {
 
   Future<void> fetchStoreDetails() async {
     String url = "${Env.apiBaseUrl}/v1/mystores/${widget.storeid}";
+
+    String? token = await Env.apiStorage.read(key: Env.apiKey);
+    if (token == null || token.isEmpty) {
+      setState(() {
+        error = "Authentication token not found";
+        loading = false;
+      });
+      return;
+    }
+
     try {
-      final response = await http.get(Uri.parse(url));
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {
+          "Authorization": "Bearer $token", // Add token in header
+          "Content-Type": "application/json",
+        },
+      );
+
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         setState(() {
           storeName = data['storename'];
           storeBanner = data['storebanner'];
+          storeLogo = data['storelogo'];
+          storeDescription = data['storedescription'];
+          storeContact = data['storecontact'];
+          storeUrl = data['storeurl'];
         });
       } else {
         setState(() {
@@ -52,12 +77,30 @@ class _MyStoreScreenDetailState extends State<MyStoreScreenDetail> {
   }
 
   Future<void> fetchItems() async {
-    String url = "${Env.apiBaseUrl}/v1/items/mystore/${widget.storeid}";
+    String url = "${Env.apiBaseUrl}/v1/items/store/${widget.storeid}";
+
+    String? token = await Env.apiStorage.read(key: Env.apiKey);
+    if (token == null || token.isEmpty) {
+      setState(() {
+        error = "Authentication token not found";
+        loading = false;
+      });
+      return;
+    }
+
     try {
-      final response = await http.get(Uri.parse(url));
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {
+          "Authorization": "Bearer $token", // Add token in header
+          "Content-Type": "application/json",
+        },
+      );
+
       if (response.statusCode == 200) {
+        final List<dynamic> data = json.decode(response.body);
         setState(() {
-          items = json.decode(response.body);
+          items = data;
           loading = false;
         });
       } else {
@@ -93,8 +136,6 @@ class _MyStoreScreenDetailState extends State<MyStoreScreenDetail> {
               SizedBox(height: 10),
               Text("Price: \$${item['price']}",
                   style: TextStyle(fontWeight: FontWeight.bold)),
-              SizedBox(height: 10),
-              Text("Contact: ${item['storecontact']}")
             ],
           ),
           actions: [
@@ -109,10 +150,31 @@ class _MyStoreScreenDetailState extends State<MyStoreScreenDetail> {
   }
 
   @override
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(storeName.isEmpty ? "Store" : storeName)),
+      appBar: AppBar(
+        title: Text(storeName.isEmpty ? "Store" : storeName),
+         actions: [
+          IconButton(
+            icon: Icon(Icons.qr_code),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => StoreScreenQR(
+                    storeLogo: storeLogo,
+                    storeBanner: storeBanner,
+                    storeName: storeName,
+                    storeContact: storeContact,
+                    storeUrl: storeUrl,
+                  ),
+                ),
+              );
+            },
+          ),
+
+        ], 
+      ),
       body: Stack(
         children: [
           Column(
@@ -171,16 +233,14 @@ class _MyStoreScreenDetailState extends State<MyStoreScreenDetail> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            // Title of the item
                                             Text(
                                               item['title'],
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
                                             ),
                                             SizedBox(height: 5),
-                                            // Price of the item
                                             Text(
-                                              "\$${item['price'].toStringAsFixed(2)}",
+                                              "\$${item['price']}",
                                               style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 14,

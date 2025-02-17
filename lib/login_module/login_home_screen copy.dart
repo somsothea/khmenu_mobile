@@ -10,7 +10,7 @@ import 'package:khmenu_mobile/env.dart';
 
 import 'login_loading_screen.dart';
 import 'login_logic.dart';
-//import 'store_screen_qr.dart'; // Import the new screen
+import 'store_screen_qr.dart'; // Import the new screen
 
 class FakestoreHomeScreen extends StatefulWidget {
   const FakestoreHomeScreen({super.key});
@@ -23,7 +23,7 @@ class _FakestoreHomeScreenState extends State<FakestoreHomeScreen> {
   Map<String, dynamic>? _userData;
   bool _loading = true;
   String? _error;
-// List to hold store data
+  List<Doc> _stores = []; // List to hold store data
 
   @override
   void initState() {
@@ -103,37 +103,30 @@ class _FakestoreHomeScreenState extends State<FakestoreHomeScreen> {
     );
   }
 
+  
+
   Widget _buildBody() {
-  if (_loading) {
-    return Center(child: CircularProgressIndicator());
+    if (_loading) {
+      return Center(child: CircularProgressIndicator());
+    }
+
+    if (_error != null) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.error, size: 50, color: Colors.red),
+            Text("Error loading profile"),
+            ElevatedButton(
+              onPressed: _fetchUserProfile,
+              child: Text("Retry"),
+            ),
+          ],
+        ),
+      );
+    }
+    return _buildProfileContent(); // Show user profile content in the body
   }
-
-  if (_error != null) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.error, size: 50, color: Colors.red),
-          Text("Error loading profile"),
-          ElevatedButton(
-            onPressed: _fetchUserProfile,
-            child: Text("Retry"),
-          ),
-        ],
-      ),
-    );
-  }
-
-  return SingleChildScrollView(
-    child: Column(
-      children: [
-        _buildProfileContent(), // User Profile Section
-        _buildMyStoresSection(), // My Stores Section
-      ],
-    ),
-  );
-}
-
 
   Widget _buildProfileContent() {
   return InkWell(
@@ -326,88 +319,4 @@ class _FakestoreHomeScreenState extends State<FakestoreHomeScreen> {
       );
     }
   }
-  Widget _buildMyStoresSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("My Stores", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              IconButton(
-                icon: Icon(Icons.add, color: Colors.pink),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => AddStoreScreen()),
-                  );
-                },
-              ),
-            ],
-          ),
-        ),
-        FutureBuilder<List<Doc>>(
-          future: _fetchUserStores(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
-            }
-            if (snapshot.hasError) {
-              return Center(child: Text("Error loading stores"));
-            }
-            if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return Center(child: Text("No stores available."));
-            }
-            return ListView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, index) {
-                final store = snapshot.data![index];
-                return ListTile(
-                  title: Text(store.storename),
-                  subtitle: Text(store.storedescription),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => MyStoreScreenDetail(
-                          storeid: store.id,
-                        ),
-                      ),
-                    );
-                  },
-                );
-              },
-            );
-          },
-        ),
-      ],
-    );
-  }
-
-  Future<List<Doc>> _fetchUserStores() async {
-    try {
-      String? token = await Env.apiStorage.read(key: Env.apiKey);
-      if (token == null) return [];
-
-      final response = await http.get(
-        Uri.parse("${Env.apiBaseUrl}/v1/mystores/user/${_userData!["_id"]}"),
-        headers: {"Authorization": "Bearer $token", "Content-Type": "application/json"},
-      );
-
-      if (response.statusCode == 200) {
-        Map<String, dynamic> data = jsonDecode(response.body);
-        List<dynamic> stores = data["docs"];
-        return stores.map((store) => Doc.fromJson(store)).toList();
-      } else {
-        return [];
-      }
-    } catch (e) {
-      return [];
-    }
-  }
-
 }
