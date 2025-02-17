@@ -80,7 +80,7 @@ class BasicApp extends StatelessWidget {
     );
 
     return MaterialApp(
-      home: SimpleStateScreen(),
+      home: SettingStateScreen(),
       themeMode: mode,
       theme: ThemeData(
         useMaterial3: true,

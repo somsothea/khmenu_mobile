@@ -7,14 +7,14 @@ import 'login_models.dart';
 import 'login_screen.dart';
 import 'login_splashscreen.dart';
 
-class FakeStoreLoadingScreen extends StatefulWidget {
-  const FakeStoreLoadingScreen({super.key});
+class LoginLoadingScreen extends StatefulWidget {
+  const LoginLoadingScreen({super.key});
 
   @override
-  State<FakeStoreLoadingScreen> createState() => _FakeStoreLoadingScreenState();
+  State<LoginLoadingScreen> createState() => _LoginLoadingScreenState();
 }
 
-class _FakeStoreLoadingScreenState extends State<FakeStoreLoadingScreen> {
+class _LoginLoadingScreenState extends State<LoginLoadingScreen> {
   Future _readData() async {
     await Future.delayed(Duration(seconds: 1), () {});
     await context.read<FakestoreLoginLogic>().read();
@@ -32,7 +32,7 @@ class _FakeStoreLoadingScreenState extends State<FakeStoreLoadingScreen> {
             return FakeStoreLoginScreen();
           } else {
             debugPrint("responseModel.token: ${responseModel.token}");
-            return FakestoreHomeScreen();
+            return LoginHomeScreen();
           }
         } else {
           return FakeStoreSplashscreen();

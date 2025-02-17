@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-//import 'package:qr_flutter/qr_flutter.dart';
+import 'package:qr_flutter/qr_flutter.dart';
+import 'package:khmenu_mobile/env.dart';
 
 class StoreScreenQR extends StatelessWidget {
   final String storeLogo;
@@ -26,11 +27,14 @@ class StoreScreenQR extends StatelessWidget {
         child: Column(
           children: [
             // Display Store Banner
-            Image.network(storeBanner,
+            Image.network("${Env.apiBaseUrl}/uploads/$storeBanner",
                 width: double.infinity, height: 200, fit: BoxFit.cover),
             SizedBox(height: 10),
             // Display Store Logo
-            CircleAvatar(radius: 50, backgroundImage: NetworkImage(storeLogo)),
+            CircleAvatar(
+                radius: 50,
+                backgroundImage:
+                    NetworkImage("${Env.apiBaseUrl}/uploads/$storeLogo")),
             SizedBox(height: 10),
             // Store Name (Centered)
             Center(
@@ -48,22 +52,24 @@ class StoreScreenQR extends StatelessWidget {
                 children: [
                   Text("Contact: $storeContact",
                       style: TextStyle(fontSize: 18)),
-                  Text("URL: $storeUrl", style: TextStyle(fontSize: 16)),
+                  Text("URL: ${Env.apiBaseUrl}/stores/$storeUrl",
+                      style: TextStyle(fontSize: 14)),
                   SizedBox(height: 20),
-/*                   Center(
+                  Center(
                     child: QrImageView(
-                      data: storeUrl,
+                      data: "${Env.apiBaseUrl}/stores/$storeUrl",
                       version: QrVersions.auto,
                       size: 180.0,
                     ),
-                  ), // Generate QR Code for Store URL */
+                  ), // Generate QR Code for Store URL
                 ],
               ),
             ),
             Center(
               child: ElevatedButton.icon(
                 onPressed: () {
-                  Clipboard.setData(ClipboardData(text: storeUrl));
+                  Clipboard.setData(ClipboardData(
+                      text: "${Env.apiBaseUrl}/stores/$storeUrl"));
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text("Store link copied!")),
                   );

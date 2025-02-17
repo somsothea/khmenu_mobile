@@ -9,6 +9,6 @@ Widget loginProvider() {
     providers: [
       ChangeNotifierProvider(create: (context) => FakestoreLoginLogic()),
     ],
-    child: FakeStoreApp(),
+    child: LoginApp(),
   );
 }

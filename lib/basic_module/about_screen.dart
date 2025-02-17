@@ -3,14 +3,10 @@ import 'package:provider/provider.dart';
 
 import 'counter_logic.dart';
 
-class SecondStateScreen extends StatelessWidget {
-  // int counter = 0;
-  // SecondStateScreen(this.counter);
-
-  // const SimpleStateScreen({super.key});
+class AboutStateScreen extends StatelessWidget {
   int _counter = 0;
 
-  SecondStateScreen({super.key});
+  AboutStateScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

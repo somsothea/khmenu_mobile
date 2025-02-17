@@ -75,7 +75,7 @@ class _FakeStoreLoginScreenState extends State<FakeStoreLoginScreen> {
               // success
               Navigator.of(context).pushReplacement(
                 CupertinoPageRoute(
-                  builder: (context) => FakestoreHomeScreen(),
+                  builder: (context) => LoginHomeScreen(),
                 ),
               );
             } else {

@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'login_loading_screen.dart';
 
-
-class FakeStoreApp extends StatefulWidget {
-  const FakeStoreApp({super.key});
+class LoginApp extends StatefulWidget {
+  const LoginApp({super.key});
 
   @override
-  State<FakeStoreApp> createState() => _FakeStoreAppState();
+  State<LoginApp> createState() => _LoginAppState();
 }
 
-class _FakeStoreAppState extends State<FakeStoreApp> {
+class _LoginAppState extends State<LoginApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: FakeStoreLoadingScreen(),
+      home: LoginLoadingScreen(),
     );
-  }  
+  }
 }

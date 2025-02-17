@@ -3,6 +3,8 @@ import 'package:khmenu_mobile/env.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:khmenu_mobile/login_module/store_screen_qr.dart';
+
 class StoreDetailScreen extends StatefulWidget {
   final String storeId;
 
@@ -15,6 +17,11 @@ class StoreDetailScreen extends StatefulWidget {
 class _StoreDetailScreenState extends State<StoreDetailScreen> {
   String storeName = "";
   String storeBanner = "";
+  String storeLogo = "";
+  String storeAddress = "";
+  String storeUrl = "";
+  String storeContact = "";
+  String storeTelegram = "";
   List<dynamic> items = [];
   bool loading = true;
   String? error;
@@ -35,6 +42,11 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
         setState(() {
           storeName = data['storename'];
           storeBanner = data['storebanner'];
+          storeLogo = data['storelogo'];
+          storeAddress = data['storeaddress'];
+          storeUrl = data['storeurl'];
+          storeContact = data['storecontact'];
+          storeTelegram = data['storetelegram'];
         });
       } else {
         setState(() {
@@ -107,11 +119,117 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
     );
   }
 
-  @override
+  Widget storeItem(Map<String, dynamic> item) {
+    return GestureDetector(
+      onTap: () => showItemDialog(item),
+      child: Card(
+        child: Column(
+          children: [
+            Expanded(
+              child: Image.network(
+                "${Env.apiBaseUrl}/uploads/${item['filename']}",
+                fit: BoxFit.cover,
+                width: double.infinity,
+                errorBuilder: (context, error, stackTrace) => Container(
+                  color: Colors.grey,
+                  child: Icon(Icons.image, size: 50),
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(5),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    item['title'],
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  SizedBox(height: 5),
+                  Text(
+                    "\$${item['price'].toStringAsFixed(2)}",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget storeItemGrid() {
+    return GridView.builder(
+      padding: EdgeInsets.all(10),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 3,
+        crossAxisSpacing: 5,
+        mainAxisSpacing: 5,
+        childAspectRatio: 4 / 5,
+      ),
+      itemCount: items.length,
+      itemBuilder: (context, index) {
+        return storeItem(items[index]);
+      },
+    );
+  }
+
+  Widget storeCardInfoRow() {
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          storeLogo.isNotEmpty
+              ? Image.network(
+                  "${Env.apiBaseUrl}/uploads/$storeLogo",
+                  width: 50,
+                  height: 50,
+                )
+              : Icon(Icons.store, size: 50),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(storeAddress, style: TextStyle(fontWeight: FontWeight.bold)),
+              Text(storeContact),
+              Text(storeTelegram),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(storeName.isEmpty ? "Store" : storeName)),
+      appBar: AppBar(
+        title: Text(storeName.isEmpty ? "Store" : storeName),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.qr_code),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => StoreScreenQR(
+                    storeLogo: storeLogo,
+                    storeBanner: storeBanner,
+                    storeName: storeName,
+                    storeContact: storeContact,
+                    storeUrl: storeUrl,
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
       body: Stack(
         children: [
           Column(
@@ -129,71 +247,13 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
                       color: Colors.grey,
                       child: Icon(Icons.store, size: 50, color: Colors.white),
                     ),
+              storeCardInfoRow(),
               Expanded(
                 child: loading
                     ? Center(child: CircularProgressIndicator())
                     : error != null
                         ? Center(child: Text(error!))
-                        : GridView.builder(
-                            padding: EdgeInsets.all(10),
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 3,
-                              crossAxisSpacing: 5,
-                              mainAxisSpacing: 5,
-                              childAspectRatio: 4 / 5,
-                            ),
-                            itemCount: items.length,
-                            itemBuilder: (context, index) {
-                              var item = items[index];
-                              return GestureDetector(
-                                onTap: () => showItemDialog(item),
-                                child: Card(
-                                  child: Column(
-                                    children: [
-                                      Expanded(
-                                        child: Image.network(
-                                          "${Env.apiBaseUrl}/uploads/${item['filename']}",
-                                          fit: BoxFit.cover,
-                                          width: double.infinity,
-                                          errorBuilder:
-                                              (context, error, stackTrace) =>
-                                                  Container(
-                                            color: Colors.grey,
-                                            child: Icon(Icons.image, size: 50),
-                                          ),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.all(5),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            // Title of the item
-                                            Text(
-                                              item['title'],
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                            SizedBox(height: 5),
-                                            // Price of the item
-                                            Text(
-                                              "\$${item['price'].toStringAsFixed(2)}",
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 14,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
+                        : storeItemGrid(),
               )
             ],
           ),

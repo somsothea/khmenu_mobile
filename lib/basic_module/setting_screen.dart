@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:khmenu_mobile/basic_module/file_upload_screen.dart';
 import 'package:khmenu_mobile/myitem_module/myitem_provider.dart';
 import 'package:khmenu_mobile/mystore_module/mystore_provider.dart';
 import 'package:khmenu_mobile/users_module/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-// import 'package:url_launcher/url_launcher.dart';
 
 import 'counter_logic.dart';
 import 'language_data.dart';
@@ -14,14 +14,14 @@ import 'about_screen.dart';
 import 'theme_logic.dart';
 import 'package:khmenu_mobile/env.dart';
 
-class SimpleStateScreen extends StatefulWidget {
-  const SimpleStateScreen({super.key});
+class SettingStateScreen extends StatefulWidget {
+  const SettingStateScreen({super.key});
 
   @override
-  State<SimpleStateScreen> createState() => _SimpleStateScreenState();
+  State<SettingStateScreen> createState() => _SettingStateScreenState();
 }
 
-class _SimpleStateScreenState extends State<SimpleStateScreen> {
+class _SettingStateScreenState extends State<SettingStateScreen> {
   Language _lang = Khmer();
   int _langIndex = 0;
 
@@ -45,7 +45,7 @@ class _SimpleStateScreenState extends State<SimpleStateScreen> {
           onPressed: () {
             Navigator.of(context).push(
               CupertinoPageRoute(
-                builder: (context) => SecondStateScreen(),
+                builder: (context) => AboutStateScreen(),
               ),
             );
           },
@@ -109,6 +109,18 @@ class _SimpleStateScreenState extends State<SimpleStateScreen> {
                     CupertinoPageRoute(
                       builder: (context) =>
                           myitemProvider(), // Navigate to RandomUserProvider
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.file_upload),
+                title: Text("File Management"),
+                onTap: () {
+                  Navigator.of(context).push(
+                    CupertinoPageRoute(
+                      builder: (context) =>
+                          FileUploadScreen(), // Navigate to RandomUserProvider
                     ),
                   );
                 },

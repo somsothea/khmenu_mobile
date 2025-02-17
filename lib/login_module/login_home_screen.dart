@@ -10,16 +10,15 @@ import 'package:khmenu_mobile/env.dart';
 
 import 'login_loading_screen.dart';
 import 'login_logic.dart';
-//import 'store_screen_qr.dart'; // Import the new screen
 
-class FakestoreHomeScreen extends StatefulWidget {
-  const FakestoreHomeScreen({super.key});
+class LoginHomeScreen extends StatefulWidget {
+  const LoginHomeScreen({super.key});
 
   @override
-  State<FakestoreHomeScreen> createState() => _FakestoreHomeScreenState();
+  State<LoginHomeScreen> createState() => _LoginHomeScreenState();
 }
 
-class _FakestoreHomeScreenState extends State<FakestoreHomeScreen> {
+class _LoginHomeScreenState extends State<LoginHomeScreen> {
   Map<String, dynamic>? _userData;
   bool _loading = true;
   String? _error;
@@ -91,7 +90,7 @@ class _FakestoreHomeScreenState extends State<FakestoreHomeScreen> {
               await context.read<FakestoreLoginLogic>().clear();
               Navigator.of(context).pushReplacement(
                 CupertinoPageRoute(
-                  builder: (context) => FakeStoreLoadingScreen(),
+                  builder: (context) => LoginLoadingScreen(),
                 ),
               );
             },
@@ -104,90 +103,89 @@ class _FakestoreHomeScreenState extends State<FakestoreHomeScreen> {
   }
 
   Widget _buildBody() {
-  if (_loading) {
-    return Center(child: CircularProgressIndicator());
-  }
+    if (_loading) {
+      return Center(child: CircularProgressIndicator());
+    }
 
-  if (_error != null) {
-    return Center(
+    if (_error != null) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.error, size: 50, color: Colors.red),
+            Text("Error loading profile"),
+            ElevatedButton(
+              onPressed: _fetchUserProfile,
+              child: Text("Retry"),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return SingleChildScrollView(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.error, size: 50, color: Colors.red),
-          Text("Error loading profile"),
-          ElevatedButton(
-            onPressed: _fetchUserProfile,
-            child: Text("Retry"),
-          ),
+          _buildProfileContent(), // User Profile Section
+          _buildMyStoresSection(), // My Stores Section
         ],
       ),
     );
   }
 
-  return SingleChildScrollView(
-    child: Column(
-      children: [
-        _buildProfileContent(), // User Profile Section
-        _buildMyStoresSection(), // My Stores Section
-      ],
-    ),
-  );
-}
-
-
   Widget _buildProfileContent() {
-  return InkWell(
-    onTap: () => _showProfileDialog(), // Open profile edit dialog on tap
-    child: SingleChildScrollView(
-      child: Column(
-        children: [
-          // User Profile Section
-          Card(
-            margin: EdgeInsets.all(20),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-            elevation: 4,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 30,
-                        backgroundColor: Colors.pink.shade100,
-                        child: Text(
-                          _userData!["firstname"][0] +
-                              _userData!["lastname"][0],
-                          style: TextStyle(color: Colors.white, fontSize: 24),
+    return InkWell(
+      onTap: () => _showProfileDialog(), // Open profile edit dialog on tap
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            // User Profile Section
+            Card(
+              margin: EdgeInsets.all(20),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15)),
+              elevation: 4,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 30,
+                          backgroundColor: Colors.pink.shade100,
+                          child: Text(
+                            _userData!["firstname"][0] +
+                                _userData!["lastname"][0],
+                            style: TextStyle(color: Colors.white, fontSize: 24),
+                          ),
                         ),
-                      ),
-                      SizedBox(width: 10),
-                      Text(
-                        "${_userData!["firstname"]} ${_userData!["lastname"]}",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                  Divider(),
-                  _buildProfileRow("Username:", _userData!["username"]),
-                  _buildProfileRow("Email:", _userData!["email"]),
-                  _buildProfileRow("Account Type:", _userData!["type"]),
-                  _buildProfileRow("Permission:", _userData!["permission"]),
-                  _buildProfileRow("Created Date:", _userData!["createdDate"]),
-                ],
+                        SizedBox(width: 10),
+                        Text(
+                          "${_userData!["firstname"]} ${_userData!["lastname"]}",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    Divider(),
+                    _buildProfileRow("Username:", _userData!["username"]),
+                    _buildProfileRow("Email:", _userData!["email"]),
+                    _buildProfileRow("Account Type:", _userData!["type"]),
+                    _buildProfileRow("Permission:", _userData!["permission"]),
+                    _buildProfileRow(
+                        "Created Date:", _userData!["createdDate"]),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ),
-  );
-}
-
+    );
+  }
 
   Widget _buildProfileRow(String label, String value) {
     return Padding(
@@ -326,6 +324,7 @@ class _FakestoreHomeScreenState extends State<FakestoreHomeScreen> {
       );
     }
   }
+
   Widget _buildMyStoresSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -335,7 +334,8 @@ class _FakestoreHomeScreenState extends State<FakestoreHomeScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("My Stores", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              Text("My Stores",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               IconButton(
                 icon: Icon(Icons.add, color: Colors.pink),
                 onPressed: () {
@@ -366,19 +366,38 @@ class _FakestoreHomeScreenState extends State<FakestoreHomeScreen> {
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 final store = snapshot.data![index];
-                return ListTile(
-                  title: Text(store.storename),
-                  subtitle: Text(store.storedescription),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => MyStoreScreenDetail(
-                          storeid: store.id,
+                return Card(
+                  margin: EdgeInsets.all(10),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
+                  elevation: 4,
+                  child: ListTile(
+                    contentPadding: EdgeInsets.all(10),
+                    leading: CircleAvatar(
+                      radius: 30,
+                      backgroundImage: NetworkImage(
+                          "${Env.apiBaseUrl}/uploads/${store.storelogo}"),
+                      backgroundColor: Colors.grey.shade200,
+                    ),
+                    title: Text(store.storename,
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold)),
+                    subtitle: Text(store.storedescription,
+                        style: TextStyle(color: Colors.grey.shade600)),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MyStoreScreenDetail(
+                            storeid: store.id,
+                          ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                    onLongPress: () {
+                      _confirmDeleteStore(store.id);
+                    },
+                  ),
                 );
               },
             );
@@ -395,7 +414,10 @@ class _FakestoreHomeScreenState extends State<FakestoreHomeScreen> {
 
       final response = await http.get(
         Uri.parse("${Env.apiBaseUrl}/v1/mystores/user/${_userData!["_id"]}"),
-        headers: {"Authorization": "Bearer $token", "Content-Type": "application/json"},
+        headers: {
+          "Authorization": "Bearer $token",
+          "Content-Type": "application/json"
+        },
       );
 
       if (response.statusCode == 200) {
@@ -410,4 +432,56 @@ class _FakestoreHomeScreenState extends State<FakestoreHomeScreen> {
     }
   }
 
+  void _confirmDeleteStore(String storeId) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Delete Store"),
+        content: Text("Are you sure you want to delete this store?"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text("No"),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              Navigator.pop(context);
+              await _deleteStore(storeId);
+            },
+            child: Text("Yes"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _deleteStore(String storeId) async {
+    try {
+      String? token = await Env.apiStorage.read(key: Env.apiKey);
+      if (token == null) return;
+
+      final response = await http.delete(
+        Uri.parse("${Env.apiBaseUrl}/v1/mystores/$storeId"),
+        headers: {
+          "Authorization": "Bearer $token",
+          "Content-Type": "application/json",
+        },
+      );
+
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Store deleted successfully")),
+        );
+        setState(() {});
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Failed to delete store: ${response.body}")),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Network error: ${e.toString()}")),
+      );
+    }
+  }
 }
