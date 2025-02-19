@@ -167,7 +167,7 @@ class _ItemScreenState extends State<ItemScreen> {
               const SizedBox(height: 10),
               // Price text, check if the price is valid and finite
               Text(
-                "Price: \$${item.price != null && item.price.isFinite ? item.price.toStringAsFixed(2) : 'N/A'}",
+                "Price: \$ ${item.price != null && item.price.isFinite ? item.price.toStringAsFixed(2) : 'N/A'}",
               ),
               const SizedBox(height: 5),
               // Description text

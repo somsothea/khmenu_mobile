@@ -1,7 +1,5 @@
 // To parse this JSON data, do
 //
-//     final productModel = productModelFromJson(jsonString);
-
 import 'dart:convert';
 
 List<ProductModel> productModelFromJson(String str) => List<ProductModel>.from(
@@ -32,14 +30,14 @@ class ProductModel {
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
-        id: json["_id"],
-        title: json["title"],
-        price: json["price"]?.toDouble(),
-        description: json["description"],
-        category: json["category"],
-        image: json["filename"],
-        userid: json["userid"],
-        storeid: json["storeid"],
+      id: json["_id"] ?? "", // Ensure id is not null
+      title: json["title"] ?? "No title", // Default title
+      price: (json["price"] ?? 0).toDouble(), // Default price
+      description: json["description"] ?? "No description", // Default description
+      category: json["category"] ?? "Uncategorized", // Default category
+      image: json["filename"] ?? "", // Default empty string for image
+      userid: json["userid"] ?? "", // Default empty string
+      storeid: json["storeid"] ?? "", // Default empty strin
       );
 
   Map<String, dynamic> toJson() => {

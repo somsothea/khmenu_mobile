@@ -24,6 +24,7 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
   String storeTelegram = "";
   List<dynamic> items = [];
   bool loading = true;
+  bool storeNotFound = false; // Flag to check if store exists
   String? error;
 
   @override
@@ -39,18 +40,28 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
+        
+        if (data == null || data.isEmpty) {
+          setState(() {
+            storeNotFound = true;
+            loading = false;
+          });
+          return;
+        }
+
         setState(() {
-          storeName = data['storename'];
-          storeBanner = data['storebanner'];
-          storeLogo = data['storelogo'];
-          storeAddress = data['storeaddress'];
-          storeUrl = data['storeurl'];
-          storeContact = data['storecontact'];
-          storeTelegram = data['storetelegram'];
+          storeName = data['storename'] ?? "";
+          storeBanner = data['storebanner'] ?? "";
+          storeLogo = data['storelogo'] ?? "";
+          storeAddress = data['storeaddress'] ?? "";
+          storeUrl = data['storeurl'] ?? "";
+          storeContact = data['storecontact'] ?? "";
+          storeTelegram = data['storetelegram'] ?? "";
+          loading = false;
         });
       } else {
         setState(() {
-          error = "Failed to load store details";
+          storeNotFound = true;
           loading = false;
         });
       }
@@ -69,18 +80,15 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
       if (response.statusCode == 200) {
         setState(() {
           items = json.decode(response.body);
-          loading = false;
         });
       } else {
         setState(() {
           error = "Failed to load items";
-          loading = false;
         });
       }
     } catch (e) {
       setState(() {
         error = e.toString();
-        loading = false;
       });
     }
   }
@@ -105,7 +113,7 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
               Text("Price: \$${item['price']}",
                   style: TextStyle(fontWeight: FontWeight.bold)),
               SizedBox(height: 10),
-              Text("Contact: ${item['storecontact']}")
+              Text("Contact: ${storeContact}")
             ],
           ),
           actions: [
@@ -164,6 +172,9 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
   }
 
   Widget storeItemGrid() {
+    if (items.isEmpty) {
+      return Center(child: Text("No items available"));
+    }
     return GridView.builder(
       padding: EdgeInsets.all(10),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -209,56 +220,52 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(storeName.isEmpty ? "Store" : storeName),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.qr_code),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => StoreScreenQR(
-                    storeLogo: storeLogo,
-                    storeBanner: storeBanner,
-                    storeName: storeName,
-                    storeContact: storeContact,
-                    storeUrl: storeUrl,
-                  ),
+        title: Text(storeNotFound ? "Store Not Found" : storeName.isEmpty ? "Store" : storeName),
+        actions: storeNotFound
+            ? []
+            : [
+                IconButton(
+                  icon: Icon(Icons.qr_code),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => StoreScreenQR(
+                          storeLogo: storeLogo,
+                          storeBanner: storeBanner,
+                          storeName: storeName,
+                          storeContact: storeContact,
+                          storeUrl: storeUrl,
+                        ),
+                      ),
+                    );
+                  },
                 ),
-              );
-            },
-          ),
-        ],
+              ],
       ),
-      body: Stack(
-        children: [
-          Column(
-            children: [
-              storeBanner.isNotEmpty
-                  ? Image.network(
-                      "${Env.apiBaseUrl}/uploads/$storeBanner",
-                      width: double.infinity,
-                      height: 150,
-                      fit: BoxFit.cover,
-                    )
-                  : Container(
-                      width: double.infinity,
-                      height: 150,
-                      color: Colors.grey,
-                      child: Icon(Icons.store, size: 50, color: Colors.white),
-                    ),
-              storeCardInfoRow(),
-              Expanded(
-                child: loading
-                    ? Center(child: CircularProgressIndicator())
-                    : error != null
-                        ? Center(child: Text(error!))
-                        : storeItemGrid(),
-              )
-            ],
-          ),
-        ],
-      ),
+      body: loading
+          ? Center(child: CircularProgressIndicator())
+          : storeNotFound
+              ? Center(child: Text("Store Not Found", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)))
+              : Column(
+                  children: [
+                    storeBanner.isNotEmpty
+                        ? Image.network(
+                            "${Env.apiBaseUrl}/uploads/$storeBanner",
+                            width: double.infinity,
+                            height: 150,
+                            fit: BoxFit.cover,
+                          )
+                        : Container(
+                            width: double.infinity,
+                            height: 150,
+                            color: Colors.grey,
+                            child: Icon(Icons.store, size: 50, color: Colors.white),
+                          ),
+                    storeCardInfoRow(),
+                    Expanded(child: error != null ? Center(child: Text(error!)) : storeItemGrid()),
+                  ],
+                ),
     );
   }
 }

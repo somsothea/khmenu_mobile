@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:khmenu_mobile/env.dart';
 import 'myitem_logic.dart';
 import 'myitem_model.dart';
-import 'add_store_screen.dart';
 
 class StoreScreen extends StatefulWidget {
   const StoreScreen({super.key});
@@ -21,18 +20,6 @@ class _StoreScreenState extends State<StoreScreen> {
         title: Text("Manage Items"),
         backgroundColor: Colors.pink,
         foregroundColor: Colors.white,
-        actions: [
-          IconButton(
-            onPressed: () {
-              // Navigate to AddStoreScreen
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => AddStoreScreen()),
-              );
-            },
-            icon: Icon(Icons.add_business),
-          ),
-        ],
       ),
       body: _buildBody(),
     );

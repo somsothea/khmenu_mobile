@@ -40,17 +40,17 @@ class Welcome {
     });
 
     factory Welcome.fromJson(Map<String, dynamic> json) => Welcome(
-        id: json["_id"],
-        storename: json["storename"],
-        storeaddress: json["storeaddress"],
-        storelogo: json["storelogo"],
-        storebanner: json["storebanner"],
-        storeurl: json["storeurl"],
-        storedescription: json["storedescription"],
-        storecontact: json["storecontact"],
-        storetelegram: json["storetelegram"],
-        category: json["category"],
-        userid: json["userid"],
+        id: json["_id"]?? "",
+        storename: json["storename"]?? "No Store",
+        storeaddress: json["storeaddress"]?? "",
+        storelogo: json["storelogo"]?? "",
+        storebanner: json["storebanner"]?? "",
+        storeurl: json["storeurl"]?? "",
+        storedescription: json["storedescription"]?? "No description",
+        storecontact: json["storecontact"]?? "",
+        storetelegram: json["storetelegram"]?? "",
+        category: json["category"]?? "",
+        userid: json["userid"]?? "",
         createdDate: DateTime.parse(json["createdDate"]),
         v: json["__v"],
     );

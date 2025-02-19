@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
@@ -15,7 +15,7 @@ class AddStoreScreen extends StatefulWidget {
 }
 
 class _AddStoreScreenState extends State<AddStoreScreen> {
-  final _storage = FlutterSecureStorage();
+
   final _formKey = GlobalKey<FormState>();
 
   // Controllers for form input fields
