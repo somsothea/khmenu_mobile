@@ -1,0 +1,1 @@
+ C:\\CADT_Project\\khmenu_mobile\\.dart_tool\\flutter_build\\fc5141977aa47880bbc7b8af33a30d10\\native_assets.yaml: 
