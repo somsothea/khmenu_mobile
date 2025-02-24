@@ -68,9 +68,8 @@ class _StoreScreenState extends State<StoreScreen> {
 
   Widget _buildCarousel() {
     List<String> images = [
-      "${Env.apiBaseUrl}/uploads/banner1.jpg",
-      "${Env.apiBaseUrl}/uploads/banner2.jpg",
-      "${Env.apiBaseUrl}/uploads/banner3.jpg",
+      "${Env.apiBaseUrl}/uploads/Banner1.jpg",
+      "${Env.apiBaseUrl}/uploads/Banner2.jpg",
     ];
 
     return CarouselSlider(
@@ -127,7 +126,7 @@ class _StoreScreenState extends State<StoreScreen> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Icon(Icons.error, size: 50),
-        Text("Something went wrong"),
+        Text("Our server is busy, Please try again!"),
         ElevatedButton(
           onPressed: () {
             context.read<StoreLogic>().setLoading();

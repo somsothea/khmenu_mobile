@@ -1,0 +1,1 @@
+ C:\\Projects\\khmenu_mobile\\.dart_tool\\flutter_build\\d159fc93903af349ce43e792813f8e8d\\native_assets.yaml: 
